@@ -617,6 +617,11 @@ ol.calendar__days {
     margin: 0 auto;
     padding: 1rem;
 }
+.calendar__pricing .sale-price {
+    max-width: 27rem;
+    margin: 2rem auto;
+    padding: 1.5rem 1rem;
+}
 
 .calendar__pricing .price-per-day .price {
     font-size: 2rem;
