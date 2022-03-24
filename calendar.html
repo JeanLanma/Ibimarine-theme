@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="./normalize.css">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- <style>
+div {       
+  text-align: center;
+  width: 300px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen,
+    Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+ol {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin: 0;
+  padding: 0;
+}
+
+li {
+  font-size: 1.5ch;
+}
+
+h2 {
+  margin-bottom: 4px;
+  padding: 0;
+}
+
+.first-day {
+  grid-column-start: var(--first-day-start, 0);
+}
+
+.day-name {
+  background: #eee;
+  font-weight: bold;
+  font-size: 12px;
+  margin-bottom: 2px;
+  padding: 4px;
+  text-align: center;
+}
+
+    </style> -->
+</head>
+<body>
+
+  
+  <h1 class="text-center">Calendario Estilizado</h1>
+
+  <div class="calendar-front">
+    <div class="calendar__header">
+      <div id="calendar-left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
+      <div class="calendar__month-name">Jannuary 2023</div>
+      <div id="calendar-right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    </div>
+    <div class="calendar__days-container">
+      <ol  class="calendar__weekdays text-color-black text-bold">
+        <li class="weekday-name">M</li>
+        <li class="weekday-name">T</li>
+        <li class="weekday-name">W</li>
+        <li class="weekday-name">T</li>
+        <li class="weekday-name">F</li>
+        <li class="weekday-name">S</li>
+        <li class="weekday-name">S</li>
+      </ol>
+      <ol class="calendar__days calendar__numberDay text-color-black text-bold">
+        <li class="first-day" style="--first-day-start: 6">1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+        <li>7</li>
+        <li>8</li>
+        <li>9</li>
+        <li>10</li>
+        <li>11</li>
+        <li>12</li>
+        <li>13</li>
+        <li>14</li>
+        <li>15</li>
+        <li>16</li>
+        <li>17</li>
+        <li>18</li>
+        <li>19</li>
+        <li>20</li>
+        <li>21</li>
+        <li>22</li>
+        <li>23</li>
+        <li>24</li>
+        <li>25</li>
+        <li>26</li>
+        <li>27</li>
+        <li>28</li>
+        <li>29</li>
+        <li>30</li>
+        <li>31</li>
+      </ol>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="calendars">
+
+  </div>
+
+<div></div>
+
+<script>
+  const actualYear = 2022
+
+  const locale = 'en'
+
+  const intlForMonths = new Intl.DateTimeFormat(locale, { month: 'long' })
+
+  const months = [...Array(12).keys()]
+
+  const intlForWeeks = new Intl.DateTimeFormat(locale, { weekday: 'narrow' })
+
+  const weekDays = [...Array(7).keys()].map((dayIndex) =>
+    intlForWeeks.format(new Date(actualYear, 7, dayIndex + 1))
+  )
+
+  console.log(new Date(2022, 3, 11))
+
+  const calendar = months.map((monthIndex) => {
+    const monthName = intlForMonths.format(new Date(actualYear, monthIndex))
+    const nextMonthIndex = (monthIndex + 1) % 12
+    const daysOfMonth = new Date(actualYear, nextMonthIndex, 0).getDate()
+    const startsOn = new Date(actualYear, monthIndex, 1).getDay()
+
+    console.log(nextMonthIndex)
+    return {
+      daysOfMonth,
+      monthName,
+      startsOn
+    }
+  })
+
+  const html = calendar
+    .map(({ daysOfMonth, monthName, startsOn }) => {
+      const days = [...Array(daysOfMonth).keys()];
+      const firstDayAttributes = `class='first-day' style='--first-day-start: ${startsOn}'`;
+      const htmlDaysName = weekDays
+        .map((dayName) => `<li class='day-name'>${dayName}</li>`)
+        .join('');
+
+        console.log(htmlDaysName)
+
+      const htmlDays = days
+        .map(
+          (day, index) =>
+            `<li ${index === 0 ? firstDayAttributes : ''}>${day + 1}</li>`
+        )
+        .join('')
+      return `<div class="calendar-front">
+                <div class="calendar__header">
+                  <div id="calendar-left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
+                  <div class="calendar__month-name">${monthName} ${actualYear}</div>
+                  <div id="calendar-right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                </div>
+                <div class="calendar__days-container">
+                  <ol class="calendar__days text-color-black text-bold">
+                    ${htmlDaysName}
+                  </ol>
+                  <ol class="calendar__days calendar__numberDay text-color-black text-bold">
+                    ${htmlDays}
+                  </ol>
+                </div>
+
+              </div>`
+    })
+    .join('')
+
+    document.querySelector('#calendars').innerHTML = html;
+</script>
+
+    
+</body>
+</html>

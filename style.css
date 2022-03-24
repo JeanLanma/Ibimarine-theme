@@ -1,0 +1,779 @@
+/* Main Values */
+:root {
+    --main-color-yellow: #AAA173;
+    --main-color-black: #3C4045;
+
+    --color-white: #ffffff;
+}
+
+/* Fonts */
+
+/* Italic */
+@font-face {
+    font-family: 'Athelas';
+    src: url('./fonts/Athelas-Italic.ttf') format('truetype');
+    font-weight: 400;
+    font-style: italic;
+}
+/* Regular */
+@font-face {
+    font-family: 'Athelas';
+    src: url('./fonts/Athelas-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+/* Bold */
+@font-face {
+    font-family: 'Athelas';
+    src: url('./fonts/Athelas-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+/* Bold Italic */
+@font-face {
+    font-family: 'Athelas';
+    src: url('./fonts/Athelas-BoldItalic.ttf') format('truetype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+/* Resseting default rules */
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+html {
+    box-sizing: border-box;
+    font-size: 62.5%;
+}
+
+body {
+    font-family: Athelas;
+    font-size: 1.6rem;
+}
+
+a{
+    text-decoration: none;
+}
+
+ul, ol, li {
+    list-style: none;
+}
+
+/* HEAD-TOP/HEADER */
+
+.head__top{
+    margin: 25px 0;
+    max-width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.head__logo {
+    width: 180px;
+}
+
+/* menu */
+.menu__icon {
+    width: 25px;
+}
+.menu__icon i{
+    font-size: 22px;
+    color: var(--main-color-yellow);
+}
+
+.menu__overlay {
+    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+    height: 100%;
+    width: 100%;
+    display: none;
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit on top */
+    left: 0;
+    top: 0;
+    background-color: var(--main-color-black); /* Black fallback color */
+    overflow-x: hidden; /* Disable horizontal scroll */
+    transition: 0.5s; /* 0.5 second transition effect to slide in or slide down the overlay (height or width, depending on reveal) */
+}
+
+.menu__head {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#menu_close {
+    margin-top: -2rem;
+    color: var(--main-color-yellow);
+    font-size: 5rem;
+}
+
+.head__logo-menu {
+    width: 20rem;
+}
+
+
+.menu__content {
+    position: relative;
+    top: 0; /* 25% from the top */
+    width: 100%; /* 100% width */
+    text-align: center; /* Centered text/links */
+    margin-top: 30px; /* 30px top margin to avoid conflict with the close button on smaller screens */
+}
+
+.menu__link {
+    /* padding: 8px; */
+    font-size: 2.2rem;
+    display: block;
+    transition: 0.3s;
+}
+.menu__link a{
+    color: #fff;
+}
+
+.menu__section {
+    width: 100%;
+    position: relative;
+    padding: 1.5rem 0;
+}
+.menu__section::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 80%;
+    height: 2px;
+    background-color: var(--main-color-yellow);
+}
+.menu__section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%,0);
+    width: 80%;
+    height: 2px;
+    background-color: var(--main-color-yellow);
+}
+
+.menu__langs {
+    display: flex;
+    justify-content: center;
+
+    color: #fff;
+}
+
+.lang_img {
+    width: 2.8rem;
+    margin-right: .8rem;
+}
+
+.lang {
+    padding: 0 1rem;
+    font-size: 2.5rem;
+    opacity: .4;
+}
+
+.bar {
+    font-size: 2.2rem;
+}
+
+/* Head Brands */
+.agent__brands{
+    display: flex;
+    justify-content: center;
+    gap: 0 1rem;
+}
+
+.img__brand-container {
+    margin: 1.8rem .5rem;
+    flex: 0 0 12%;
+    max-width: 15%;
+}
+
+.brand-icon-small {
+    max-width: 50px;
+}
+
+/* Hero section */
+
+.hero-container{
+    height: auto;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-container::before {
+    content: '';
+    position: absolute;
+    height: .4rem;
+    width: 100%;
+    background-color: var(--main-color-yellow);
+    color: var(--main-color-yellow);
+    top: 0%;
+    left: 0%;
+}
+.hero-container::after {
+    content: '';
+    position: absolute;
+    height: .4rem;
+    width: 100%;
+    background-color: var(--main-color-yellow);
+    color: var(--main-color-yellow);
+    bottom: 0%;
+    left: 0%;
+}
+
+/* Main Card */
+
+.card{
+    max-width: 80%;
+    max-width: 288px;
+    margin: 2.2rem auto;
+    overflow: hidden;
+}
+
+.card-head {
+    position: relative;
+}
+
+.card__img {
+    max-height: 191px;
+    overflow: hidden;
+}
+
+.card__img img {
+    object-fit: cover;
+    object-position: center;
+}
+
+.label {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 150px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.label-es {
+    overflow: hidden;
+}
+
+.label-en {
+    overflow: hidden;
+}
+.label-en::before {
+    content: 'Recomended';
+    position: absolute;
+    height: 30px;
+    width: 150%;
+    background-color: var(--main-color-yellow );
+    transform: rotate(45deg) translateY(-40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.4rem;
+}
+
+.label-es::before {
+    content: 'Recomendada';
+    position: absolute;
+    height: 30px;
+    width: 150%;
+    background-color: var(--main-color-yellow );
+    transform: rotate(45deg) translateY(-40px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.4rem;
+}
+
+.card__title{
+    position: absolute;
+    bottom: 0;
+    background-color: var(--main-color-yellow);
+    display: block;
+    width: 100%;
+}
+.card__title>p {
+    font-family: Athelas;
+    font-weight: bold;
+    line-height: 3rem;
+    color: #fff;
+}
+
+
+.card-body {
+    border: 2px solid var(--main-color-yellow);
+}
+.card__price {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0 10px;
+}
+/* Footer */
+.footer__contact-section {
+    display:  flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.contact__text {
+    font-size: 2.1rem;
+    font-weight: bold;
+}
+
+.contact__phone {
+    color: var(--main-color-black);
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.social__icons {
+    font-size: 2.5rem;
+    margin: 1rem 0;
+}
+ .social__icons i{
+     margin: 0 .7rem;
+ }
+
+
+/* RENT SHOW - Page */
+
+.main_img {
+    height: 220px;
+    overflow-y: hidden;
+}
+
+.slide_carousel {
+    width: 95%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.thumbnails-row {
+    display: flex;
+    margin: 1rem auto;
+    justify-content: space-between;
+    gap: 0 1rem;
+}
+
+.thumbnails-row .thumbnails {
+    flex: 0 1 33%;
+}
+
+.thumbnails {
+    max-width: 33%;
+    height: 63px;
+    overflow-y: hidden;
+}
+
+.img-thumbnail {
+    width: 100%;
+    max-width: 11rem;
+    height: auto;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Yacht Info */
+
+.container-sm {
+    max-width: 560px;
+    width: 95%;
+    margin: 1rem auto;
+}
+
+
+.yacht__title {
+    color: #fff;
+    width: 90%;
+    line-height: 3rem;
+    font-style: italic;
+    font-size: 1.1rem;
+    margin: 0 auto;
+}
+
+.yacht__description {
+    font-size: 1.4rem;
+    padding: 2rem;
+    line-height: 21px;
+}
+
+.yacht__icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem auto;
+}
+
+.yacht__feature_icon {
+    width: 3rem;
+    line-height: 15px;
+    margin: 0.5rem;
+}
+
+.yacht__icon-caption {
+    font-size: 1rem;
+}
+
+/* Yacht Table - #d9d9d9*/
+
+.yacht__features-table {
+    width: 100%;
+    height: auto;
+    padding: 0 1.75rem;
+}
+
+.yacht__item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.3rem 1rem;
+}
+
+.yacht__item:nth-child(even) {
+    background-color: #e4e4e4;
+}
+
+/* Events Page */
+
+
+
+
+/* Utilities */
+
+/* CALENDAR */
+
+.reservation__calendar {
+    margin-top: 3rem;
+}
+
+.reservation__calendar>h2 {
+    font-size: 1.9rem;
+    margin-bottom: .3rem;
+}
+
+.calendar-front {
+    margin: 0 auto;
+
+    max-width: 324px;
+
+    border-radius: 10px;
+
+}
+
+.calendar__header {
+    z-index: -99;
+
+    padding: 1.4rem 1rem;
+    
+    background-color: var(--main-color-yellow);
+    color: var(--color-white);
+
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    
+    border: 1px solid var(--main-color-black);
+    
+
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+
+    font-size: 2rem;
+}
+
+ol.calendar__weekdays {
+    display: flex;
+    justify-content: space-around;
+}
+
+.calendar__weekdays {
+    padding-top: 1.5rem;
+}
+
+.calendar__weekdays .weekday-name {
+    font-size: 2rem;
+}
+
+.calendar__days-container {
+    border-bottom: 1px solid var(--main-color-black);
+    border-left: 1px solid var(--main-color-black);
+    border-right: 1px solid var(--main-color-black);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    opacity: .8;
+}
+ol.calendar__days {
+    text-align: center;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 1rem 0 1.2rem 0;
+
+    font-size: 2rem;
+}
+
+.day-name {
+    font-size: 2.3rem;
+}
+
+.calendar__numberDay li {
+    padding: 0.8rem;
+    font-size: 2.2rem;
+}
+
+.first-day {
+    grid-column-start: var(--first-day-start, 0);
+  }
+
+
+/* Rent Pricing section */
+.calendar__pricing {
+    text-align: center;
+    margin: 1rem auto;
+}
+
+.calendar__pricing .price-per-day {
+    max-width: 27rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+.calendar__pricing .price-per-day .price {
+    font-size: 2rem;
+}
+
+/* Forms - Reservation */
+
+.reservation__form {
+    margin: 0 auto 4rem auto;
+}
+
+.reservation__form .form__input:not(:last-child) {
+    padding: 1.75rem;
+}
+
+.reservation__form .form__input label {
+    font-weight: bold;
+}
+
+.reservation__form .form__input input[type=text],
+.reservation__form .form__input input[type=email] {
+    border: 1px solid var(--main-color-black);
+    padding: .8rem;
+    width: 100%;
+}
+
+/* Bottom Slide - Similar Boats Slider*/
+
+.similar__boats {
+    margin-bottom: 4rem;
+}
+
+.swiper-similar-boats {
+    width: 15rem;
+    height: 15rem;
+}
+
+.similar-boat-thumbnails {
+    width: 11rem;
+    height: 11rem;
+}
+
+.similar-boat-thumbnails img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+
+/* Margin and Padding */
+
+.margin-1 {
+    margin: 1rem;
+}
+
+.margin-top-1 {
+    margin-top: 1rem;
+}
+.margin-top-2 {
+    margin-top: 2rem;
+}
+.margin-top-4 {
+    margin-top: 4rem;
+}
+
+.margin-bottom-1 {
+    margin-bottom: 1rem;
+}
+
+.margin-bottom-2 {
+    margin-bottom: 2rem;
+}
+
+.margin-bottom-4 {
+    margin-bottom: 4rem;
+}
+
+.padding-vertical-1 {
+    padding: 1rem 0;
+}
+
+/* Line - Spaces */
+
+.hr-spacer {
+    display: block;
+    border-top: 2px solid var(--main-color-black);
+    margin: 0.7rem auto;
+    width: 143px;
+    opacity: .7;
+}
+
+/* Display */
+.invisible {
+    visibility: hidden;
+}
+
+.active {
+    opacity: 1;
+}
+
+/* Blocks - Borders*/
+
+.smooth-corners {
+    border-radius: 5%;
+}
+
+.smooth-top-corners {
+    border-top-left-radius: 5%;
+    border-top-right-radius: 5%;
+}
+.smooth-right-corners {
+    border-top-right-radius: 5%;
+    border-bottom-right-radius: 5%;
+}
+.smooth-left-corners {
+    border-top-left-radius: 5%;
+    border-bottom-left-radius: 5%;
+}
+
+/* Block-Spacer */
+.margin-2 {
+    margin: 2rem ;
+}
+
+.margin-vertical-1 {
+    margin: 1.5rem 0;
+}
+
+.margin-vertical-2 {
+    margin: 3rem 0;
+}
+
+.margin-vertical-4 {
+    margin: 4rem 0;
+}
+
+.margin-bottom-4{
+    margin-bottom: 4rem;
+}
+
+.padding-horizontal-1 {
+    padding: 0 1rem;
+}
+
+/* Buttons */
+.button {
+    background-color: var(--main-color-yellow);
+    border: none;
+    border-radius: 6px;
+    padding: 5px 15px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: var(--main-color-black);
+}
+
+/* Texts */
+.text-title {
+    font-size: 2.2rem;
+}
+.text-center {
+    text-align: center;
+}
+
+/* Colors */
+.bg-golden {
+    background-color: var(--main-color-yellow);
+}
+
+.bg-gray {
+    background-color: #dbdbdb;
+}
+
+.text-color-main {
+    color: var(--main-color-yellow);
+}
+
+.text-color-black {
+    color: var(--main-color-yellow);
+}
+
+.text-color-black {
+    color: var(--main-color-black);
+}
+
+.text-color-white {
+    color: var(--color-white);
+}
+
+.text-muted {
+    color: #6c757d;
+}
+
+.text-upper{
+    text-transform: uppercase;
+}
+
+/* Images */
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Text Fonts */
+
+.f-bold {
+    font-family: Athelas;
+    font-weight: bold;
+}
+.text-bold {
+    font-family: Athelas;
+    font-weight: bold;
+}
