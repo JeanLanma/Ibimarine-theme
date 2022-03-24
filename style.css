@@ -736,8 +736,11 @@ ol.calendar__days {
     overflow: hidden;
 }
 .smooth-side-corners-alternating:nth-child(even) {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
+    overflow: hidden;
 }
 
 /* Block-Spacer */
