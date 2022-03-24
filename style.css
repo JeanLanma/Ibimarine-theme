@@ -238,8 +238,8 @@ ul, ol, li {
 /* Main Card */
 
 .card{
-    max-width: 80%;
-    max-width: 288px;
+    max-width: 90%;
+    width: 30rem;
     margin: 2.2rem auto;
     overflow: hidden;
 }
@@ -332,7 +332,64 @@ ul, ol, li {
     align-items: center;
     gap: 0 10px;
 }
+
+/* Card - News and Lifestyle */
+
+.card__news {
+    display: flex;
+    align-items: center;
+    height: 17.5rem;
+}
+
+.card__news:nth-child(even) {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+}
+
+.card__img-news {
+    height: 100%;
+}
+
+.card__news_text>.card__text>p {
+    font-size: 1.5rem;
+    margin: .5rem auto;
+}
+
+.card-border-golden {
+    border: 1px solid var(--main-color-yellow);
+}
+
+.card__news-element {
+    height: 100%;
+    flex: 50%;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+}
+
+.text-ellipsed {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 6;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+}
+
+.img-news {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+
+    -o-object-fit: cover;
+    -o-object-position: center;
+}
+
 /* Footer */
+
 .footer__contact-section {
     display:  flex;
     flex-direction: column;
@@ -671,13 +728,16 @@ ol.calendar__days {
     border-top-left-radius: 5%;
     border-top-right-radius: 5%;
 }
-.smooth-right-corners {
-    border-top-right-radius: 5%;
-    border-bottom-right-radius: 5%;
+
+/* Used in News Section */
+.smooth-side-corners-alternating {
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    overflow: hidden;
 }
-.smooth-left-corners {
-    border-top-left-radius: 5%;
-    border-bottom-left-radius: 5%;
+.smooth-side-corners-alternating:nth-child(even) {
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
 }
 
 /* Block-Spacer */
