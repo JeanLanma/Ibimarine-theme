@@ -89,28 +89,59 @@
     <!-- Content -->
     <div class="container">
         <div class="slide_show">
-            <div class="main_img">
-                <img id="slideMainImg" class="img-fluid" src="./img/home/home-04.jpg" alt="">
+            <div class="swiper main_img">
+                <div class="swiper-wrapper">
+                    <div class="swiper-slide">
+                        <img class="img-fluid" src="./img/rent/rent-01.jpg" alt="">
+                    </div>
+                    
+                    <div class="swiper-slide">
+                        <img class="img-fluid" src="./img/rent/rent-02.jpeg" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="img-fluid" src="./img/rent/rent-03.jpeg" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="img-fluid" src="./img/rent/rent-01.jpg" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="img-fluid" src="./img/rent/rent-02.jpeg" alt="">
+                    </div>
+                    <div class="swiper-slide">
+                        <img class="img-fluid" src="./img/rent/rent-03.jpeg" alt="">
+                    </div>
+                </div>
             </div>
 
             <div class="slide_carousel">
-                <div class="arrow">
+                <div class="arrow" id="arrowPrev">
                     <svg style="width: 1rem; height: auto; margin: 0 5px" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com" viewBox="43.026 0 161.967 490" width="161.967" height="490">
                         <polyline style="stroke: rgb(60, 64, 69); fill: rgb(60, 64, 69);" points="204.993 0.285 204.993 490 43.026 244.36 204.72 0" bx:origin="0.525 0.496"/>
                     </svg>
                 </div>
-                <div class="thumbnails-row">
-                    <div class="thumbnails">
-                        <img class="img-thumbnail" src="./img/rent/rent-01.jpg" alt="thumbnail">
-                    </div>
-                    <div class="thumbnails">
-                        <img class="img-thumbnail" src="./img/rent/rent-02.jpeg" alt="thumbnail">
-                    </div>
-                    <div class="thumbnails">
-                        <img class="img-thumbnail" src="./img/rent/rent-03.jpeg" alt="thumbnail">
+                <div class="swiper thumbnails-row" thumbsSlider="">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide thumbnails">
+                            <img class="img-thumbnail " src="./img/rent/rent-01.jpg" alt="thumbnail">
+                        </div>
+                        <div class="swiper-slide thumbnails">
+                            <img class="img-thumbnail " src="./img/rent/rent-02.jpeg" alt="thumbnail">
+                        </div>
+                        <div class="swiper-slide thumbnails">
+                            <img class="img-thumbnail " src="./img/rent/rent-03.jpeg" alt="thumbnail">
+                        </div>
+                        <div class="swiper-slide thumbnails">
+                            <img class="img-thumbnail " src="./img/rent/rent-01.jpg" alt="thumbnail">
+                        </div>
+                        <div class="swiper-slide thumbnails">
+                            <img class="img-thumbnail " src="./img/rent/rent-02.jpeg" alt="thumbnail">
+                        </div>
+                        <div class="swiper-slide thumbnails">
+                            <img class="img-thumbnail " src="./img/rent/rent-03.jpeg" alt="thumbnail">
+                        </div>
                     </div>
                 </div>
-                <div class="arrow">
+                <div class="arrow" id="arrowNext">
                     <svg style="width: 1rem; height: auto; margin: 0 5px" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com" viewBox="51.124 -3.92 161.967 490" width="161.967" height="490">
                         <polyline style="stroke: rgb(60, 64, 69); fill: rgb(60, 64, 69);" points="204.993 0.285 204.993 490 43.026 244.36 204.72 0" transform="matrix(-1, 0, 0, -1, 256.117344, 486.079994)" bx:origin="0.525 0.496"/>
                       </svg>
@@ -380,10 +411,26 @@
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
     <script>
+        const slideMainThumbs = new Swiper('.thumbnails-row', {
+            slidesPerView: 3,
+            spaceBetween: 5,
+            watchSlidesProgress: true,
+        })
+        const slideMain = new Swiper('.main_img', {
+            spaceBetween: 10,
+            navigation: {
+                nextEl: '#arrowNext',
+                prevEl: '#arrowPrev'
+            },
+            thumbs: {
+                    swiper: slideMainThumbs,
+                    },
+        })
 
         const slideSimilarBoats = new Swiper('.swiper-similar-boats' , {
             width: 110,
             spaceBetween: 10,
+            centeredSlidesBounds: true
         })
 
     </script>
