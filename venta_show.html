@@ -17,6 +17,9 @@
 </head>
 <body>
 
+    <!-- Dark Overlay container-->
+    <div id="overlay"></div>
+
     <!--Mobile Menu -->
     <div class="menu__overlay" id="menu_mobile">
         <!-- Menu Content -->
@@ -280,7 +283,7 @@
                 </div>
 
                 <div class="form__input text-center">
-                    <input class="button" type="submit" value="Enviar Peticion">
+                    <input id="send_reservation_request" class="button" type="submit" value="Enviar Peticion">
                 </div>
             </form>
         </div>
@@ -412,6 +415,49 @@
     </script>
 
     <script>
+
+        /*  Modal request */
+
+        let overlay = `
+            <div class="overlay__request__dark" id="overlay__request__dark">
+                <div class="overlay__dark_content">
+                    <div class="overlay__section">
+                        <div class="head__logo_overlay-request">
+                            <img class="img-fluid" src="./img/logoibimarine_2.png" alt="Logo Ibimarine">
+                        </div>
+                    </div>
+                    <div class="overlay__section margin-vertical-2">
+                        <div class="text-color-white text-center overlay__request_text">
+                            <h4 class="margin-vertical-2 text-bold">¡Gracias por su petición!</h4>
+                            <p>En menos de 24 horas,
+                                nuestros comerciales
+                                contactarán con Usted.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="overlay__section margin-vertical-4">
+                        <button id="close__overlay_dark" class="button button-lg">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        document.querySelector('#overlay').innerHTML = overlay;
+
+        // Close request overlay
+        document.querySelector('#close__overlay_dark').addEventListener('click', function(e){
+            document.querySelector('body').style.overflow = 'visible';
+            document.querySelector('#overlay__request__dark').style.display = 'none'
+        })
+
+        // open request overlay 
+        document.querySelector('#send_reservation_request').addEventListener('click', function(e){
+            e.preventDefault();
+            document.querySelector('body').style.overflow = 'hidden'
+            document.querySelector('#overlay__request__dark').style.display = 'block';
+        })
+
+        /* Menu */
         const closeMenuBtn = document.getElementById('menu_close');
         const openMenuBtn = document.getElementById('menu_open');
         const menuMobile = document.getElementById('menu_mobile');
