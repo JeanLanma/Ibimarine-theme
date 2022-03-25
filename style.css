@@ -212,6 +212,7 @@ ul, ol, li {
     width: 100%;
     position: relative;
     overflow: hidden;
+    max-height: 42rem;
 }
 
 .hero-container::before {
