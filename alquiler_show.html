@@ -260,19 +260,22 @@
 
         <div class="reservation__calendar" id="reservationCalendar">
 
-            <h2 class="text-center text-color-black text-upper">Fecha de reserva</h2>
+            <h2 class="text-center text-color-black-muted text-upper">Fecha de reserva</h2>
             <div class="calendar-front active-date">
                 <div class="calendar__header">
                   <div id="calendar-left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
-                  <div class="calendar__month-name">March 2022</div>
+                    <div class="calendar__month_year">
+                      <span class="calendar__month">March</span>
+                      <span class="calendar__year">2022</span>
+                    </div>
                   <div id="calendar-right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
                 </div>
-                <div class="calendar__days-container">
-                  <ol class="calendar__days text-color-black text-bold">
+                <div class="calendar__days-container text-color-black-muted">
+                  <ol class="calendar__days text-bold">
                     <li class="day-name">M</li><li class="day-name">T</li><li class="day-name">W</li><li class="day-name">T</li><li class="day-name">F</li><li class="day-name">S</li><li class="day-name">S</li>
                   </ol>
-                  <ol class="calendar__days calendar__numberDay text-color-black text-bold">
-                    <li class="first-day" style="--first-day-start: 2">1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li><li>27</li><li>28</li><li>29</li><li>30</li><li>31</li>
+                  <ol class="calendar__days calendar__numberDay text-color-black-muted text-bold">
+                    <li class="month-day first-day" style="--first-day-start: 2">1</li><li class="month-day">2</li><li class="month-day">3</li><li class="month-day">4</li><li class="month-day">5</li><li class="month-day">6</li><li class="month-day">7</li><li class="month-day">8</li><li class="month-day">9</li><li class="month-day">10</li><li class="month-day">11</li><li class="month-day">12</li><li class="month-day">13</li><li class="month-day">14</li><li class="month-day">15</li><li class="month-day">16</li><li class="month-day">17</li><li class="month-day">18</li><li class="month-day">19</li><li class="month-day">20</li><li class="month-day">21</li><li class="month-day">22</li><li class="month-day">23</li><li class="month-day">24</li><li class="month-day">25</li><li class="month-day">26</li><li class="month-day">27</li><li class="month-day">28</li><li class="month-day">29</li><li class="month-day">30</li><li class="month-day">31</li>
                   </ol>
                 </div>
 
@@ -440,7 +443,44 @@
 
     <script>
 
-        /*  Modal request */
+        // Global HTML Containers
+        const DocumentBody = document.querySelector('body');
+        const BodyOverlay = document.querySelector('#overlay');
+
+        // Calendar get Selected date
+
+        const calendar = document.querySelector('#reservationCalendar');
+        let selectedDate = [];
+
+        calendar.addEventListener('click', function(e){
+
+            if(e.target.classList.contains('month-day')){
+                let isCheked = !e.target.classList.contains('calendar__day-selected') 
+                                ? e.target.classList.add('calendar__day-selected')
+                                : e.target.classList.remove('calendar__day-selected');
+                let day = e.target;
+                console.log(getCalendarSelection(day));
+            }
+        })
+
+        function getCalendarSelection(day){
+            selectedDate = [...selectedDate, getCalendarDate(day)];
+            return selectedDate;
+        }
+
+        function getCalendarDate(day){
+            const calendarBase = day.parentElement.parentElement.parentElement;
+            const calendar = {
+                year: calendarBase.querySelector('.calendar__year').textContent,
+                month: calendarBase.querySelector('.calendar__month').textContent,
+                day: day.textContent            
+            };
+            
+            return calendar;
+        }
+
+        
+        /*  Modal OVERLAY request */
 
         let overlay = `
             <div class="overlay__request__dark" id="overlay__request__dark">
@@ -467,22 +507,20 @@
             </div>
         `;
 
-        document.querySelector('#overlay').innerHTML = overlay;
+        BodyOverlay.innerHTML = overlay;
 
         // Close request overlay
         document.querySelector('#close__overlay_dark').addEventListener('click', function(e){
-            document.querySelector('body').style.overflow = 'visible';
+            DocumentBody.style.overflow = 'visible';
             document.querySelector('#overlay__request__dark').style.display = 'none'
         })
 
         // open request overlay 
         document.querySelector('#send_reservation_request').addEventListener('click', function(e){
             e.preventDefault();
-            document.querySelector('body').style.overflow = 'hidden'
+            DocumentBody.style.overflow = 'hidden'
             document.querySelector('#overlay__request__dark').style.display = 'block';
         })
-
-        // Calendar get elected Date 
 
 
         // Menu
@@ -494,12 +532,12 @@
         openMenuBtn.addEventListener('click', openMenu)
 
         function closeMenu(){
-            document.querySelector('body').style.overflow = 'visible'
+            DocumentBody.style.overflow = 'visible'
             menuMobile.style.display = 'none';
         }
 
         function openMenu(){
-            document.querySelector('body').style.overflow = 'hidden'
+            DocumentBody.style.overflow = 'hidden'
             menuMobile.style.display = 'block';
         }
     </script>

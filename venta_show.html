@@ -391,7 +391,7 @@
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
     <script>
-                const slideMainThumbs = new Swiper('.thumbnails-row', {
+        const slideMainThumbs = new Swiper('.thumbnails-row', {
             slidesPerView: 3,
             spaceBetween: 5,
             watchSlidesProgress: true,
@@ -415,6 +415,10 @@
     </script>
 
     <script>
+
+        // Global HTML Containers
+        const DocumentBody = document.querySelector('body');
+        const BodyOverlay = document.querySelector('#overlay');
 
         /*  Modal request */
 
@@ -442,18 +446,18 @@
             </div>
         `;
 
-        document.querySelector('#overlay').innerHTML = overlay;
+        BodyOverlay.innerHTML = overlay;
 
         // Close request overlay
         document.querySelector('#close__overlay_dark').addEventListener('click', function(e){
-            document.querySelector('body').style.overflow = 'visible';
+            DocumentBody.style.overflow = 'visible';
             document.querySelector('#overlay__request__dark').style.display = 'none'
         })
 
         // open request overlay 
         document.querySelector('#send_reservation_request').addEventListener('click', function(e){
             e.preventDefault();
-            document.querySelector('body').style.overflow = 'hidden'
+            DocumentBody.style.overflow = 'hidden'
             document.querySelector('#overlay__request__dark').style.display = 'block';
         })
 
@@ -466,12 +470,12 @@
         openMenuBtn.addEventListener('click', openMenu)
 
         function closeMenu(){
-            document.querySelector('body').style.overflow = 'visible'
+            DocumentBody.style.overflow = 'visible'
             menuMobile.style.display = 'none';
         }
 
         function openMenu(){
-            document.querySelector('body').style.overflow = 'hidden'
+            DocumentBody.style.overflow = 'hidden'
             menuMobile.style.display = 'block';
         }
     </script>
