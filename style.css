@@ -543,11 +543,9 @@ ul, ol, li {
 
 .calendar-front {
     margin: 0 auto;
-
     max-width: 324px;
-
     border-radius: 10px;
-
+    /* display: none; */
 }
 
 .calendar__header {
@@ -761,10 +759,11 @@ ol.calendar__days {
     opacity: .7;
 }
 
-/* Display */
+/* Displays */
 .invisible {
     visibility: hidden;
 }
+
 
 .active {
     opacity: 1;
@@ -878,6 +877,10 @@ ol.calendar__days {
 
 .text-upper{
     text-transform: uppercase;
+}
+
+.text-capitalize {
+    text-transform: capitalize;
 }
 
 /* Images */

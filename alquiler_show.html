@@ -469,16 +469,19 @@
         }
 
         function getCalendarDate(day){
+            const enMonths = [''];
             const calendarBase = day.parentElement.parentElement.parentElement;
             const calendar = {
                 year: calendarBase.querySelector('.calendar__year').textContent,
                 month: calendarBase.querySelector('.calendar__month').textContent,
-                day: day.textContent            
+                day: day.textContent,
+                toFormatDate: function(){
+                    return this.year;
+                }            
             };
             
             return calendar;
         }
-
         
         /*  Modal OVERLAY request */
 
