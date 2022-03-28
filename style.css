@@ -732,6 +732,22 @@ ol.calendar__days {
     background-size: cover;
     background-position: center;
     height: 100%;
+
+    position: relative;
+}
+.overlay__photos_main #photosArrowPrev {
+    display: inline;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translate(0%, -65%);
+}
+.overlay__photos_main #photosArrowNext {
+    display: inline;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translate(0%, -65%);
 }
 
 .overlay__photos_main img {
