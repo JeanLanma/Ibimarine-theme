@@ -92,13 +92,12 @@ ul, ol, li {
     color: var(--main-color-yellow);
 }
 
-.menu__overlay {
-    /* Height & width depends on how you want to reveal the overlay (see JS below) */   
+.menu__overlay { 
     height: 100%;
     width: 100%;
     display: none;
-    position: fixed; /* Stay in place */
-    z-index: 999; /* Sit on top */
+    position: fixed;
+    z-index: 999;
     left: 0;
     top: 0;
     background-color: var(--main-color-black); /* Black fallback color */
@@ -428,7 +427,7 @@ ul, ol, li {
 
 .swiper {
     width: 100%;
-    height: 220px;
+    height: 22rem;
     margin-left: auto;
     margin-right: auto;
 }
@@ -680,20 +679,20 @@ ol.calendar__days {
 /* Rent Request - Dark Overlay */
 
 .overlay__request__dark {
-    position: 
-    fixed; 
+    position: fixed;
+    overflow: scroll;
     z-index: 9; 
     left: 0; 
     top: 0; 
     width: 100%; 
-    height: 100vh; 
+    height: 100vh;
     background-color: rgba(60, 64, 69, 0.96);
     display: none;
 }
 
 .overlay__dark_content {
     width: 100%;
-    height: 100%;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -703,6 +702,11 @@ ol.calendar__days {
 .overlay__section {
     opacity: 1;
     padding: 0 1.75rem;
+    margin: 0 auto;
+}
+.overlay__section-fullwidth {
+    opacity: 1;
+    padding: 0;
     margin: 0 auto;
 }
 
@@ -715,6 +719,41 @@ ol.calendar__days {
     width: 200px;
 }
 
+/* Overlay Photos */
+
+.overlay__photo_hero {
+    overflow: hidden;
+    width: 100%;
+    height: 22rem;
+    margin: 0 auto;
+}
+
+.overlay__photos_main {
+    background-size: cover;
+    background-position: center;
+    height: 100%;
+}
+
+.overlay__photos_main img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    -o-object-fit: cover;
+    -o-object-position: center;
+}
+
+.overlay__photos_thumbnails {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+.overlay__photos_thumbnails img {
+    height: 100%;
+    max-height: 7rem;
+    width: 100%;
+}
 /* Utilities */
 
 /* Margin and Padding */

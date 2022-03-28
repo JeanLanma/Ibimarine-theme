@@ -8,7 +8,7 @@
     <title>Ibimarine</title>
 
     <!-- Slide -->
-    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="./vendor/swiper/swiper-bundle.min.css"/>
 
     <!-- Local styles -->
     <link rel="stylesheet" href="normalize.css">
@@ -18,7 +18,8 @@
 <body>
 
     <!-- Dark Overlay container-->
-    <div id="overlay"></div>
+    <div id="overlay__request_container"></div>
+    <div id="overlay__photos_container"></div>
 
     <!--Mobile Menu -->
     <div class="menu__overlay" id="menu_mobile">
@@ -92,7 +93,7 @@
     <!-- Content -->
     <div class="container">
         <div class="slide_show">
-            <div class="swiper main_img">
+            <div class="swiper main_img" id="mainSileImg">
                 <div class="swiper-wrapper">
                     <div class="swiper-slide">
                         <img class="img-fluid" src="./img/rent/rent-01.jpg" alt="">
@@ -414,38 +415,16 @@
        </footer> 
     </div>
 
-    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    <script src="./vendor/swiper/swiper-bundle.min.js"></script>
 
-    <script>
-        const slideMainThumbs = new Swiper('.thumbnails-row', {
-            slidesPerView: 3,
-            spaceBetween: 5,
-            watchSlidesProgress: true,
-        })
-        const slideMain = new Swiper('.main_img', {
-            spaceBetween: 10,
-            navigation: {
-                nextEl: '#arrowNext',
-                prevEl: '#arrowPrev'
-            },
-            thumbs: {
-                    swiper: slideMainThumbs,
-                    },
-        })
-
-        const slideSimilarBoats = new Swiper('.swiper-similar-boats' , {
-            width: 110,
-            spaceBetween: 10,
-            centeredSlidesBounds: true
-        })
-
-    </script>
+    <script src="./js/slides.js"></script>
 
     <script>
 
         // Global HTML Containers
         const DocumentBody = document.querySelector('body');
-        const BodyOverlay = document.querySelector('#overlay');
+        const requestOverlay = document.querySelector('#overlay__request_container');
+        const photosOverlay = document.querySelector('#overlay__photos_container');
 
         // Calendar get Selected date
 
@@ -485,8 +464,8 @@
         
         /*  Modal OVERLAY request */
 
-        let overlay = `
-            <div class="overlay__request__dark" id="overlay__request__dark">
+        let overlayResuqest = `
+            <div class="overlay__request__dark" id="overlay__request">
                 <div class="overlay__dark_content">
                     <div class="overlay__section">
                         <div class="head__logo_overlay-request">
@@ -510,22 +489,75 @@
             </div>
         `;
 
-        BodyOverlay.innerHTML = overlay;
+        requestOverlay.innerHTML = overlayResuqest;
 
         // Close request overlay
         document.querySelector('#close__overlay_dark').addEventListener('click', function(e){
             DocumentBody.style.overflow = 'visible';
-            document.querySelector('#overlay__request__dark').style.display = 'none'
+            document.querySelector('#overlay__request').style.display = 'none'
         })
 
         // open request overlay 
         document.querySelector('#send_reservation_request').addEventListener('click', function(e){
             e.preventDefault();
             DocumentBody.style.overflow = 'hidden'
-            document.querySelector('#overlay__request__dark').style.display = 'block';
+            document.querySelector('#overlay__request').style.display = 'block';
         })
 
+        /*  Modal OVERLAY Photos */
 
+        let overlayPhotos =`
+        <div class="overlay__request__dark" id="overlay__photos">
+            <div class="overlay__dark_content">
+                <div class="overlay__section-fullwidth overlay__photo_hero margin-bottom-2 margin-top-4">
+                    <div class="overlay__photos_main margin-top-2">
+                        <img id="overlay__photo_main-elment" src="./img/rent/rent-01.jpg" alt="">
+                    </div>
+                </div>
+                <div class="overlay__section">
+                    <div class="overlay__photos_thumbnails">
+                        <img class="img-fluid" src="./img/rent/rent-01.jpg" alt="">
+                        <img class="img-fluid" src="./img/rent/rent-02.jpeg" alt="">
+                        <img class="img-fluid" src="./img/rent/rent-03.jpeg" alt="">
+                        <img class="img-fluid" src="./img/rent/rent-01.jpg" alt="">
+                        <img class="img-fluid" src="./img/rent/rent-02.jpeg" alt="">
+                        <img class="img-fluid" src="./img/rent/rent-03.jpeg" alt="">
+                        <img class="img-fluid" src="./img/rent/rent-02.jpeg" alt="">
+                        <img class="img-fluid" src="./img/rent/rent-03.jpeg" alt="">
+                    </div>
+                </div>
+                <div class="overlay__section margin-vertical-4">
+                    <button id="close__overlay_dark_photos" class="button button-lg">Cerrar</button>
+                </div>
+            </div>
+        </div>
+        `;
+
+        photosOverlay.innerHTML = overlayPhotos;
+        
+        const showPhotosBtn = document.querySelector('#mainSileImg');
+        
+        showPhotosBtn.addEventListener('click', function(e){
+            DocumentBody.style.overflow = 'hidden';
+            console.log('Overlay Photos opened')
+            document.querySelector('#overlay__photos').style.display = 'block';
+            console.log('Overlay Photos opened')
+        })
+        document.querySelector('#close__overlay_dark_photos').addEventListener('click', function(e){
+            DocumentBody.style.overflow = 'visible';
+            console.log('Overlay Photos closed')
+            document.querySelector('#overlay__photos').style.display = 'none';
+        })
+
+        const overlayPhotosMainImg = document.querySelector('#overlay__photo_main-elment');
+        const overlayPhotosThumbnails = document.querySelector('.overlay__photos_thumbnails');
+
+        overlayPhotosThumbnails.addEventListener('click', function(e){
+            console.log(e.target);
+            if(e.target.nodeName === 'IMG'){
+                overlayPhotosMainImg.src = e.target.src;
+            }
+        });
         // Menu
         const closeMenuBtn = document.getElementById('menu_close');
         const openMenuBtn = document.getElementById('menu_open');
