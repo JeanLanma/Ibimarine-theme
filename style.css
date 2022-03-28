@@ -544,7 +544,7 @@ ul, ol, li {
     margin: 0 auto;
     max-width: 324px;
     border-radius: 10px;
-    /* display: none; */
+    display: none;
 }
 
 .calendar__header {
@@ -815,11 +815,19 @@ ol.calendar__days {
 }
 
 /* Displays */
+.d-none {
+    display: none;
+}
+.d-block {
+    display: block;
+}
+.calendar-active {
+    display: block;
+}
+
 .invisible {
     visibility: hidden;
 }
-
-
 .active {
     opacity: 1;
 }

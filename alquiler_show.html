@@ -259,28 +259,11 @@
             </div>
         </div>
 
-        <div class="reservation__calendar" id="reservationCalendar">
+        <div class="reservation__calendar">
 
             <h2 class="text-center text-color-black-muted text-upper">Fecha de reserva</h2>
-            <div class="calendar-front active-date">
-                <div class="calendar__header">
-                  <div id="calendar-left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
-                    <div class="calendar__month_year">
-                      <span class="calendar__month">March</span>
-                      <span class="calendar__year">2022</span>
-                    </div>
-                  <div id="calendar-right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
-                </div>
-                <div class="calendar__days-container text-color-black-muted">
-                  <ol class="calendar__days text-bold">
-                    <li class="day-name">M</li><li class="day-name">T</li><li class="day-name">W</li><li class="day-name">T</li><li class="day-name">F</li><li class="day-name">S</li><li class="day-name">S</li>
-                  </ol>
-                  <ol class="calendar__days calendar__numberDay text-color-black-muted text-bold">
-                    <li class="month-day first-day" style="--first-day-start: 2">1</li><li class="month-day">2</li><li class="month-day">3</li><li class="month-day">4</li><li class="month-day">5</li><li class="month-day">6</li><li class="month-day">7</li><li class="month-day">8</li><li class="month-day">9</li><li class="month-day">10</li><li class="month-day">11</li><li class="month-day">12</li><li class="month-day">13</li><li class="month-day">14</li><li class="month-day">15</li><li class="month-day">16</li><li class="month-day">17</li><li class="month-day">18</li><li class="month-day">19</li><li class="month-day">20</li><li class="month-day">21</li><li class="month-day">22</li><li class="month-day">23</li><li class="month-day">24</li><li class="month-day">25</li><li class="month-day">26</li><li class="month-day">27</li><li class="month-day">28</li><li class="month-day">29</li><li class="month-day">30</li><li class="month-day">31</li>
-                  </ol>
-                </div>
-
-            </div>
+            
+            <div id="reservationCalendar"></div>
             <div class="calendar__pricing text-color-white">
                 <div class="price-per-day bg-golden">
                     <div class="price">1.800&euro; / Dia <span>(Jun o Sep)</span></div>
@@ -418,6 +401,8 @@
     <script src="./vendor/swiper/swiper-bundle.min.js"></script>
 
     <script src="./js/slides.js"></script>
+    <script src="./js/menu.js"></script>
+    <script src="./js/calendar.js"></script>
 
     <script>
 
@@ -425,42 +410,6 @@
         const DocumentBody = document.querySelector('body');
         const requestOverlay = document.querySelector('#overlay__request_container');
         const photosOverlay = document.querySelector('#overlay__photos_container');
-
-        // Calendar get Selected date
-
-        const calendar = document.querySelector('#reservationCalendar');
-        let selectedDate = [];
-
-        calendar.addEventListener('click', function(e){
-
-            if(e.target.classList.contains('month-day')){
-                let isCheked = !e.target.classList.contains('calendar__day-selected') 
-                                ? e.target.classList.add('calendar__day-selected')
-                                : e.target.classList.remove('calendar__day-selected');
-                let day = e.target;
-                console.log(getCalendarSelection(day));
-            }
-        })
-
-        function getCalendarSelection(day){
-            selectedDate = [...selectedDate, getCalendarDate(day)];
-            return selectedDate;
-        }
-
-        function getCalendarDate(day){
-            const enMonths = [''];
-            const calendarBase = day.parentElement.parentElement.parentElement;
-            const calendar = {
-                year: calendarBase.querySelector('.calendar__year').textContent,
-                month: calendarBase.querySelector('.calendar__month').textContent,
-                day: day.textContent,
-                toFormatDate: function(){
-                    return this.year;
-                }            
-            };
-            
-            return calendar;
-        }
         
         /*  Modal OVERLAY request */
 
@@ -568,23 +517,6 @@
                 overlayPhotosMainImg.src = e.target.src;
             }
         });
-        // Menu
-        const closeMenuBtn = document.getElementById('menu_close');
-        const openMenuBtn = document.getElementById('menu_open');
-        const menuMobile = document.getElementById('menu_mobile');
-
-        closeMenuBtn.addEventListener('click', closeMenu);
-        openMenuBtn.addEventListener('click', openMenu)
-
-        function closeMenu(){
-            DocumentBody.style.overflow = 'visible'
-            menuMobile.style.display = 'none';
-        }
-
-        function openMenu(){
-            DocumentBody.style.overflow = 'hidden'
-            menuMobile.style.display = 'block';
-        }
     </script>
 </body>
 </html>
