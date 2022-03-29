@@ -1,48 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Ibimarine</title>
 
-    <link rel="stylesheet" href="./normalize.css">
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="normalize.css">
+    <link rel="stylesheet" href="./css/calendarBackOffice.css">
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 </head>
 <body>
 
-  <!-- Front page HTML Calendar structure -->
-  <!--             <div class="calendar-front active-date">
-                <div class="calendar__header">
-                  <div id="calendar-left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
-                    <div class="calendar__month_year">
-                      <span class="calendar__month">March</span>
-                      <span class="calendar__year">2022</span>
-                    </div>
-                  <div id="calendar-right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+    <!--Mobile Menu -->
+    <div class="menu__overlay" id="menu_mobile">
+        <!-- Menu Content -->
+        <div class="menu__content">
+            <div class="menu__head">
+                <a href="javascript:void(0)" id="close_navbar" class="invisible">&times;</a>
+                
+                <div class="head__logo-menu">
+                    <img class="img-fluid" src="./img/logoibimarine_2.png" alt="Logo Ibimarine">
                 </div>
-                <div class="calendar__days-container text-color-black-muted">
-                  <ol class="calendar__days text-bold">
-                    <li class="day-name">M</li><li class="day-name">T</li><li class="day-name">W</li><li class="day-name">T</li><li class="day-name">F</li><li class="day-name">S</li><li class="day-name">S</li>
-                  </ol>
-                  <ol class="calendar__days calendar__numberDay text-color-black-muted text-bold">
-                    <li class="month-day first-day" style="--first-day-start: 2">1</li><li class="month-day">2</li><li class="month-day">3</li><li class="month-day">4</li><li class="month-day">5</li><li class="month-day">6</li><li class="month-day">7</li><li class="month-day">8</li><li class="month-day">9</li><li class="month-day">10</li><li class="month-day">11</li><li class="month-day">12</li><li class="month-day">13</li><li class="month-day">14</li><li class="month-day">15</li><li class="month-day">16</li><li class="month-day">17</li><li class="month-day">18</li><li class="month-day">19</li><li class="month-day">20</li><li class="month-day">21</li><li class="month-day">22</li><li class="month-day">23</li><li class="month-day">24</li><li class="month-day">25</li><li class="month-day">26</li><li class="month-day">27</li><li class="month-day">28</li><li class="month-day">29</li><li class="month-day">30</li><li class="month-day">31</li>
-                  </ol>
+                
+                <a href="javascript:void(0)" id="menu_close">&times;</a>
+            </div>
+
+            <div class="menu__section margin-top-2">
+                <div class="menu__langs">
+                    <div class="lang active"><img class="img-fluid lang_img" src="./img/lang_es.png" alt=""> ES</div> 
+                    <span class="bar">&#124;</span>
+                    <div class="lang"><img class="img-fluid lang_img" src="./img/lang_en.png" alt="">EN</div>
                 </div>
+            </div>
 
-            </div> -->
+            <div class="menu__links">
+                <div class="menu__link margin-vertical-2"><a class="text-upper text-bold" href="index.html">Home</a></div>
+                <div class="menu__link margin-vertical-2"><a class="text-upper text-bold" href="alquiler.html">Alquiler</a></div>
+                <div class="menu__link margin-vertical-2"><a class="text-upper text-bold" href="venta.html">Venta</a></div>
+                <div class="menu__link margin-vertical-2"><a class="text-upper text-bold" href="complementos.html">Complementos</a></div>
+                <div class="menu__link margin-vertical-2"><a class="text-upper text-bold" href="eventos.html">Eventos</a></div>
+                <div class="menu__link margin-vertical-2"><a class="text-upper text-bold" href="noticias.html">Noticias</a></div>
+                <div class="menu__link margin-vertical-2"><a class="text-upper text-bold" href="contacto.html">Contacto</a></div>
+            </div>
+            
+            <div class="menu__section margin-bottom-4">
+                <div class="menu__link"><a class="text-upper text-bold" href="#">Área Privada</a></div>
+            </div>
+        </div>
+    </div>
 
-  
-  <h1 class="text-center">Calendarios Dinamicos JS</h1>
+    <!-- Section Header -->
+    <div class="header">
+        <div class="head__top">
+            <div class="menu__icon invisible">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+            <div class="head__logo">
+                <img class="img-fluid" src="./logoibimarine.png" alt="Logo Ibimarine">
+            </div>
+            <div class="menu__icon" id="menu_open">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+        <div class="head__brands">
+            <div class="agent__text text-center f-bold text-color-black">
+                AGENTE OFICIAL DE IBIZA
+            </div>
+            <div class="agent__brands">
+                <a href="#" class="img__brand-container"><img class="img-fluid" src="img/sessa.png" alt="brand imgage"></a>
+                <a href="#" class="img__brand-container"><img class="img-fluid" src="img/sessa.png" alt="brand imgage"></a>
+                <a href="#" class="img__brand-container"><img class="img-fluid" src="img/sessa.png" alt="brand imgage"></a>
+            </div>
+        </div>
+        <!-- Hero -->
+        <div class="hero__content">
+            <div class="hero-container">
+                <h1 class="margin-1 text-title text-center text-upper text-bold text-color-black">Calendario 2022</h1>
+            </div>
+        </div>
+    </div>
 
-  <div id="reservationCalendar"></div>
+    <!-- Section Content -->
+    <div class="content">
+        <div class="container">
+            <div id="reservationCalendar"></div>
+        </div>
+    </div>
 
-<div></div>
+    <!-- Footer -->
+    <div class="footer">
+       <footer>
+           <div class="footer__contact-section">
+               <p class="contact__text text-color-main">!Contacta con nosotros¡</p>
+               <p class="contact__phone">+34 650 020 215</p>
+               <div class="social__icons">
+                <a href="#"><i class="fa-brands fa-facebook-square text-color-main"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram-square text-color-main"></i></a>
+               </div>
+           </div>
+           <div class="footer__legal-section text-center">
+               <p class="copyrigth text-color-black f-bold margin-top-1 margin-bottom-1">Derechos Reservados</p>
+               <p class="legal__pages">
+                   <div class="text-color-black margin-bottom-1">
+                        <a href="#" class="text-color-black"><span>Términos y condiciones</span></a>
+                        - 
+                        <a href="#" class="text-color-black"><span>Política de Privacidad</span></a>
+                   </div>
+                   <div class="text-color-black margin-bottom-1">
+                        <a href="#" class="text-color-black"><span>Política de cookies</span></a>
+                        - 
+                        <a href="#" class="text-color-black"><span>Proteccion de datos</span></a>
+                   </div>
+               </p>
+               <p class="text-upper text-bold text-color-black margin-bottom-1 margin-top-1">Ibimarine &copy;</p>
+           </div>
+       </footer> 
+    </div>
 
-<script src="./js/calendar.js"></script>
+    <script src="./js/calendarBackOffice.js"></script>
 
-    
+    <script>
+        const closeMenuBtn = document.getElementById('menu_close');
+        const openMenuBtn = document.getElementById('menu_open');
+        const menuMobile = document.getElementById('menu_mobile');
+
+        closeMenuBtn.addEventListener('click', closeMenu);
+        openMenuBtn.addEventListener('click', openMenu)
+
+        function closeMenu(){
+            menuMobile.style.display = 'none';
+        }
+
+        function openMenu(){
+            menuMobile.style.display = 'block';
+        }
+    </script>
 </body>
 </html>
