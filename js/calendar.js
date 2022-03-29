@@ -2,8 +2,10 @@
  * Next feature:
  * .-done Show just one calendar month in html at time
  *      add functionality to arrows in calendar header
- * .-}working - Validate that selected days are consecutives Yes:1-2-3, No: 1-2-5
+ * .-}Done - Validate that selected days are consecutives Yes:1-2-3, No: 1-2-5
  *      reset calendar selection if days are not consecutive
+ * .- Validate repeated days
+ *      and remove from final selected days
  * .- Show Selected Period below Calendar
  *      DD/MM/YYYY - Start Date: 01/03/2022 End Date: 03/03/2022
  *      Alternativa: 1 al 3 de Mayo.
@@ -79,12 +81,12 @@ const CalendarTohtml = calendar.map(({ daysOfMonth, monthName, startsOn,monthId 
     return `
           <div data-month-id="${monthId}" class="calendar-front ${calendar[currentDate.getMonth()].monthName === monthName ? 'calendar-active': ''}">
               <div class="calendar__header">
-                <div class="calendar-left-arrow"><i class="fa-solid fa-chevron-left"></i></div>
+                <div class="calendar-left-arrow cursor-pointer"><i class="fa-solid fa-chevron-left"></i></div>
                   <div class="calendar__month_year">
                     <span class="calendar__month text-capitalize">${monthName}</span>
                     <span class="calendar__year">${actualYear}</span>
                   </div>
-                <div class="calendar-right-arrow"><i class="fa-solid fa-chevron-right"></i></div>
+                <div class="calendar-right-arrow cursor-pointer"><i class="fa-solid fa-chevron-right"></i></div>
               </div>
               <div class="calendar__days-container text-color-black-muted">
                 <ol class="calendar__days text-bold">
@@ -109,27 +111,93 @@ document.querySelector('#reservationCalendar').innerHTML = CalendarTohtml.join('
 calendarElement.addEventListener('click', function(e){
     const currentCalendarActive = document.querySelector('.calendar-active');
     if(e.target.classList.contains('month-day')){
-        let isCheked = !e.target.classList.contains('calendar__day-selected') 
-                        ? e.target.classList.add('calendar__day-selected')
-                        : e.target.classList.remove('calendar__day-selected');
+        let daysWithActiveClass = document.querySelectorAll('.calendar__day-selected');
         let day = e.target;
-        console.log(getCalendarSelection(day));
+        getCalendarSelection(day);
+        if(!isValidDate(selectedDate)){ 
+          selectedDate = [];
+          for(let i = 0; i < daysWithActiveClass.length; i++){
+            daysWithActiveClass[i].classList.remove('calendar__day-selected')
+          }
+          console.log(`Is a Valid day: ${isValidDate(selectedDate)}`);
+          console.log('date Selection: ', selectedDate);
+          return null;
+        }
+        if(isRepeatedDate(selectedDate)){ 
+          console.log(`Is a repeteated day: ${isRepeatedDate(selectedDate)}`);
+          console.log('date Selection: ', selectedDate);
+          return ;
+        }
+        /* If not select next day consecutively, restart selection from last selected day*/
+        console.log(`is consecutive: ${isConsecutiveDate(selectedDate)}`);
+        if(!isConsecutiveDate(selectedDate)){
+          selectedDate = Array();
+          for(let i = 0; i < daysWithActiveClass.length; i++){
+            daysWithActiveClass[i].classList.remove('calendar__day-selected')
+          }
+          let isCheked = !e.target.classList.contains('calendar__day-selected') 
+              ? e.target.classList.add('calendar__day-selected')
+              : e.target.classList.remove('calendar__day-selected');
+              getCalendarSelection(day);
+              console.log('date Selection: ', selectedDate)
+              return;
+            }
+            console.log('date Selection: ', selectedDate)
+        /* check days and adding class selected */
+        let isCheked = !e.target.classList.contains('calendar__day-selected') 
+                      ? e.target.classList.add('calendar__day-selected')
+                      : e.target.classList.remove('calendar__day-selected');
     }
+    /* Change month in calendar */
     if(e.target.classList.contains('fa-chevron-left') || e.target.classList.contains('calendar-left-arrow')) {
         currentCalendarActive.classList.remove('calendar-active');
         currentCalendarActive.previousElementSibling.classList.add('calendar-active');
-        console.log('Change prev month')
     }
     else if( e.target.classList.contains('fa-chevron-right') || e.target.classList.contains('calendar-right-arrow')) {
         currentCalendarActive.classList.remove('calendar-active');
         currentCalendarActive.nextElementSibling.classList.add('calendar-active');
-        console.log('Change next month')
     }
 })
 
 function getCalendarSelection(day){
     selectedDate = [...selectedDate, parseCalendar(day)];
     return selectedDate;
+}
+
+function isConsecutiveDate(parsedCalendar){
+    let flag = true;
+    if(parsedCalendar.length > 1){
+      const day = (parsedCalendar[parsedCalendar.length - 2]).addDays(1).getTime();
+      const lastDay = parsedCalendar[parsedCalendar.length - 1].date().getTime();
+      flag =  (day === lastDay)
+                      ? true
+                      : false ;
+    }
+    return flag;
+}
+
+function isRepeatedDate(parsedCalendar){
+    let flag = false;
+    if(parsedCalendar.length > 1){
+      const lastDay = parsedCalendar[parsedCalendar.length - 1].date().getTime();
+      const isRepteated = parsedCalendar.filter((currentDay) => ( lastDay === currentDay.date().getTime()));
+      if(isRepteated.length > 1){
+        flag = true;
+      }
+    }
+    return flag;
+}
+
+function isValidDate(parsedCalendar){
+  let flag = false;
+  if(parsedCalendar.length >= 1){
+    const lastDay = parsedCalendar[parsedCalendar.length - 1].date();
+    const today = new Date();
+    if(lastDay > today){
+      flag = true
+    }
+  }
+  return flag;
 }
 
 function parseCalendar(htmlCalendarDay){
@@ -142,14 +210,23 @@ function parseCalendar(htmlCalendarDay){
     }
 
     const calendarBase = htmlCalendarDay.parentElement.parentElement.parentElement;
-    const calendar = {
-        year: calendarBase.querySelector('.calendar__year').textContent,
-        month: calendarBase.querySelector('.calendar__month').textContent,
-        day: htmlCalendarDay.textContent,
-        dateFormat: function(){
-          return new Date( this.year, monthsTranslations[locale][this.month.toLowerCase()], this.day).toISOString();
-        }            
-    };
+    const calendar = function(){
+        return {
+            year: Number(calendarBase.querySelector('.calendar__year'). textContent),
+            month: calendarBase.querySelector('.calendar__month').textContent,
+            day: Number(htmlCalendarDay.textContent),
+            today: new Date().getTime(),
+            addDays: function(days){
+                return new Date( this.year, monthsTranslations[locale][this.month.toLowerCase()], this.day + 1);
+            },
+            dateISOFormat: function(){
+                return new Date( this.year, monthsTranslations[locale][this.month.toLowerCase()], this.day).toISOString();
+            },
+            date: function(){
+                return new Date( this.year, monthsTranslations[locale][this.month.toLowerCase()], this.day);
+            }
+        };
+    }
     
-    return calendar.dateFormat();
+    return calendar();
 }

@@ -262,7 +262,7 @@
         <div class="reservation__calendar">
 
             <h2 class="text-center text-color-black-muted text-upper">Fecha de reserva</h2>
-            
+
             <div id="reservationCalendar"></div>
             <div class="calendar__pricing text-color-white">
                 <div class="price-per-day bg-golden">
@@ -498,13 +498,10 @@
         
         showPhotosBtn.addEventListener('click', function(e){
             DocumentBody.style.overflow = 'hidden';
-            console.log('Overlay Photos opened')
             document.querySelector('#overlay__photos').style.display = 'block';
-            console.log('Overlay Photos opened')
         })
         document.querySelector('#close__overlay_dark_photos').addEventListener('click', function(e){
             DocumentBody.style.overflow = 'visible';
-            console.log('Overlay Photos closed')
             document.querySelector('#overlay__photos').style.display = 'none';
         })
 

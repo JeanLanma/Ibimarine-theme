@@ -520,6 +520,10 @@ ul, ol, li {
 
 /* CALENDAR */
 
+.month-day {
+    cursor: pointer;
+}
+
 .calendar__day-selected {
     background: var(--main-color-yellow);
     color: var(--color-white);
@@ -814,14 +818,19 @@ ol.calendar__days {
     opacity: .7;
 }
 
+/* Cursor */
+.cursor-pointer {
+    cursor: pointer;
+}
+
 /* Displays */
+.calendar-active {
+    display: block;
+}
 .d-none {
     display: none;
 }
 .d-block {
-    display: block;
-}
-.calendar-active {
     display: block;
 }
 
