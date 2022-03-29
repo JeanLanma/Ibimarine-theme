@@ -19,7 +19,7 @@ const calendarElement = document.querySelector('#reservationCalendar');
 let selectedDate = [];
 
 /* Localization settings */
-const locale = 'es';
+const locale = 'en';
 
 /**
  * Year & Array with 12 empty slots to save the months with their translations.
@@ -114,35 +114,34 @@ calendarElement.addEventListener('click', function(e){
         let daysWithActiveClass = document.querySelectorAll('.calendar__day-selected');
         let day = e.target;
         getCalendarSelection(day);
+        console.log('always selectedDate', selectedDate)
+
         if(!isValidDate(selectedDate)){ 
-          selectedDate = [];
-          for(let i = 0; i < daysWithActiveClass.length; i++){
-            daysWithActiveClass[i].classList.remove('calendar__day-selected')
-          }
-          console.log(`Is a Valid day: ${isValidDate(selectedDate)}`);
-          console.log('date Selection: ', selectedDate);
+          selectedDate.pop();
+          console.log('Is Not Valid day & Date selection: ', selectedDate);
           return null;
         }
-        if(isRepeatedDate(selectedDate)){ 
-          console.log(`Is a repeteated day: ${isRepeatedDate(selectedDate)}`);
-          console.log('date Selection: ', selectedDate);
-          return ;
+        if(isRepeatedDate(selectedDate)){
+          console.log(`Is a repeteated day & date Selection: `, selectedDate);
+          selectedDate.pop();  
+          selectedDate.pop();  
+          let isCheked = e.target.classList.contains('calendar__day-selected') 
+                        ? e.target.classList.remove('calendar__day-selected')
+                        : null;
+          return null;
         }
         /* If not select next day consecutively, restart selection from last selected day*/
-        console.log(`is consecutive: ${isConsecutiveDate(selectedDate)}`);
-        if(!isConsecutiveDate(selectedDate)){
-          selectedDate = Array();
-          for(let i = 0; i < daysWithActiveClass.length; i++){
-            daysWithActiveClass[i].classList.remove('calendar__day-selected')
-          }
-          let isCheked = !e.target.classList.contains('calendar__day-selected') 
-              ? e.target.classList.add('calendar__day-selected')
-              : e.target.classList.remove('calendar__day-selected');
-              getCalendarSelection(day);
-              console.log('date Selection: ', selectedDate)
-              return;
+        if(selectedDate.length > 1 && !isConsecutiveDate(selectedDate[selectedDate.length -2],selectedDate[selectedDate.length - 1].date())){
+            selectedDate = [];
+            for(let i = 0; i < daysWithActiveClass.length; i++){
+              daysWithActiveClass[i].classList.remove('calendar__day-selected');
             }
-            console.log('date Selection: ', selectedDate)
+            getCalendarSelection(day);
+            e.target.classList.add('calendar__day-selected')
+            console.log('Is not consecutive & date Selection: ', selectedDate)
+            return null;
+        }
+        console.log('Pass All comprobations & date Selection: ', selectedDate)
         /* check days and adding class selected */
         let isCheked = !e.target.classList.contains('calendar__day-selected') 
                       ? e.target.classList.add('calendar__day-selected')
@@ -164,24 +163,44 @@ function getCalendarSelection(day){
     return selectedDate;
 }
 
-function isConsecutiveDate(parsedCalendar){
+function isConsecutiveDate(day, nextDay){
+  let flag = false;
+  if(day.d.getTime() == nextDay.getTime() || day.addDays(1).getTime() == nextDay.getTime()){
+    flag = true;
+  }
+  return flag;
+
+}
+/* function isConsecutiveDate(parsedCalendar){
     let flag = true;
-    if(parsedCalendar.length > 1){
-      const day = (parsedCalendar[parsedCalendar.length - 2]).addDays(1).getTime();
-      const lastDay = parsedCalendar[parsedCalendar.length - 1].date().getTime();
-      flag =  (day === lastDay)
+    if(parsedCalendar.length === 1){  return flag; }
+    if(parsedCalendar.length === 2){
+      const day = (parsedCalendar[0]).addDays(1);
+      const lastDay = parsedCalendar[1].date();
+      flag = (day.valueOf() === lastDay.valueOf())
+                        ? true
+                        : false;
+        return flag;
+    }
+    if(parsedCalendar.length > 2){
+      const day = parsedCalendar[parsedCalendar.length - 2].addDays(1);
+      const lastDay = parsedCalendar[parsedCalendar.length - 1].date();
+      day.setHours(0,0,0,0);
+      lastDay.setHours(0,0,0,0);
+      flag = (day.valueOf() == lastDay.valueOf())
                       ? true
-                      : false ;
+                      : false;
     }
     return flag;
 }
-
+ */
 function isRepeatedDate(parsedCalendar){
     let flag = false;
     if(parsedCalendar.length > 1){
-      const lastDay = parsedCalendar[parsedCalendar.length - 1].date().getTime();
-      const isRepteated = parsedCalendar.filter((currentDay) => ( lastDay === currentDay.date().getTime()));
-      if(isRepteated.length > 1){
+      // const lastDay = parsedCalendar[parsedCalendar.length - 1].date().getTime();
+      const dateStamps = parsedCalendar.map((element) => Number(element.dateStamp()));
+      const isRepeated = dateStamps.some((val, i) => dateStamps.indexOf(val) !== i);
+      if(isRepeated){
         flag = true;
       }
     }
@@ -211,19 +230,27 @@ function parseCalendar(htmlCalendarDay){
 
     const calendarBase = htmlCalendarDay.parentElement.parentElement.parentElement;
     const calendar = function(){
+        const year = Number(calendarBase.querySelector('.calendar__year'). textContent);
+        const month = calendarBase.querySelector('.calendar__month').textContent
+        const day = Number(htmlCalendarDay.textContent);
         return {
-            year: Number(calendarBase.querySelector('.calendar__year'). textContent),
-            month: calendarBase.querySelector('.calendar__month').textContent,
-            day: Number(htmlCalendarDay.textContent),
-            today: new Date().getTime(),
+            year: year,
+            month: month,
+            day: day,
+            d: new Date( year, monthsTranslations[locale][month.toLowerCase()], day),
             addDays: function(days){
-                return new Date( this.year, monthsTranslations[locale][this.month.toLowerCase()], this.day + 1);
+                const newDate =  new Date( +this.d );
+                newDate.setDate(newDate.getDate() + Number(days));
+                return newDate;
             },
             dateISOFormat: function(){
-                return new Date( this.year, monthsTranslations[locale][this.month.toLowerCase()], this.day).toISOString();
+                return new this.d.toISOString();
             },
             date: function(){
-                return new Date( this.year, monthsTranslations[locale][this.month.toLowerCase()], this.day);
+                return this.d;
+            },
+            dateStamp: function(){
+                return [year,monthsTranslations[locale][month.toLowerCase()],day].join('');
             }
         };
     }
