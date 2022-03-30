@@ -13,6 +13,8 @@
 </head>
 <body>
 
+    <div id="overlay"></div>
+
     <!--Mobile Menu -->
     <div class="menu__overlay" id="menu_mobile">
         <!-- Menu Content -->
@@ -179,7 +181,7 @@
 
                     <!-- Submit button -->
                     <div class="reservation__input -no-border text-center">
-                        <input class="button button-golden button-lg" type="submit" value="Guardar">
+                        <input id="addNewReservatio" class="button button-golden button-lg" type="submit" value="Guardar">
                     </div>
                 </div>
             </div>
@@ -227,6 +229,55 @@
                             : accordionArrow.style.transform = 'rotate(-180deg)';
             })
         }
+
+        /* Overlay */
+
+        // Global HTML Containers
+        const DocumentBody = document.querySelector('body');
+        const BodyOverlay = document.querySelector('#overlay');
+
+        /*  Modal request */
+
+        let overlay = `
+            <div class="overlay__request__dark" id="overlay__request__dark">
+                <div class="overlay__dark_content">
+                    <div class="overlay__section">
+                        <div class="head__logo_overlay-request">
+                            <img class="img-fluid" src="./img/logoibimarine_2.png" alt="Logo Ibimarine">
+                        </div>
+                    </div>
+                    <div class="overlay__section margin-vertical-2">
+                        <div class="text-color-white text-center overlay__request_text">
+                            <h4 class="margin-vertical-2 text-bold">¡Reserva creada!</h4>
+                            <p>
+                                Puedes comprobar que 
+                                tu reserva ha sido creada en
+                                el calendario
+                            </p>
+                        </div>
+                    </div>
+                    <div class="overlay__section margin-vertical-4">
+                        <button id="close__overlay_dark" class="button button-golden button-lg">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        BodyOverlay.innerHTML = overlay;
+
+        // Close request overlay
+        document.querySelector('#close__overlay_dark').addEventListener('click', function(e){
+            DocumentBody.style.overflow = 'visible';
+            document.querySelector('#overlay__request__dark').style.display = 'none'
+        })
+
+        // open request overlay 
+        document.querySelector('#addNewReservatio').addEventListener('click', function(e){
+            e.preventDefault();
+            DocumentBody.style.overflow = 'hidden'
+            document.querySelector('#overlay__request__dark').style.display = 'block';
+        })
+
 
         /* Menu */
         const closeMenuBtn = document.getElementById('menu_close');
