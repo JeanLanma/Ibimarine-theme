@@ -549,7 +549,74 @@ ul, ol, li {
     margin-bottom: 7rem;
 }
 
-/* Forms - Reservation */
+/* Calendar - BackOffice make Reservation */
+
+.reservation__add_new_date {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 85%;
+    height: auto;
+    padding: 1rem;
+}
+
+.reservation__input {
+    border: 1px solid;
+    padding: 0 0.5rem;
+    margin-bottom: 1em;
+}
+.reservation__input input[type=text]{
+    height: 4rem;
+    width: 100%;
+    padding: 0 1rem;
+}
+.reservation__input textarea{
+    height: 8rem;
+    width: 100%;
+    padding: 0 1rem;
+}
+.reservation__input.-no-border {
+    border: none;
+    padding: 0;
+}
+.reservation__input_head {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 2.5em;
+}
+.reservation__input_body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .5s ease;
+}
+
+div.reservation__input_option{
+    height: 3rem;
+    border-bottom: 1px solid;
+    width: 20rem;
+    margin: .6rem auto;
+}
+div.reservation__input_option:last-child{
+    border-bottom: none;
+}
+
+.not-available {
+    color: #c3c3c3;
+}
+
+.accordion-arrow {
+    width: 1.6rem;
+    margin-right: 2rem;
+}
+.accordion-arrow svg {
+    transform: rotate(-180deg);
+    transition: transform 1s ease;
+}
+
+
+/* Forms - Reservation - FrontPage */
 
 .reservation__form {
     margin: 0 auto 4rem auto;
@@ -691,6 +758,10 @@ ul, ol, li {
 
 /* Margin and Padding */
 
+.m-auto {
+    margin:0 auto;
+}
+
 .margin-1 {
     margin: 1rem;
 }
@@ -815,6 +886,7 @@ ul, ol, li {
 
 .button.button-lg {
     padding: 8px 40px;
+    font-size: 2.1rem;
 }
 .button.button-white {
     background: var(--color-white);
@@ -852,6 +924,9 @@ ul, ol, li {
 }
 
 .text-color-main {
+    color: var(--main-color-yellow);
+}
+.text-color-golden {
     color: var(--main-color-yellow);
 }
 
