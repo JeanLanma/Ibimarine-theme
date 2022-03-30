@@ -4,6 +4,7 @@
     --main-color-black: #3C4045;
 
     --color-white: #ffffff;
+    --color-light: #dbdbdb;
 }
 
 /* Fonts */
@@ -539,6 +540,15 @@ ul, ol, li {
     font-size: 2rem;
 }
 
+/* Calendar - BackOffice calendar */
+.calendar__buttons {
+    display: flex;
+    justify-content: center;
+    gap: 0 1rem;
+    margin-top: -7rem;
+    margin-bottom: 7rem;
+}
+
 /* Forms - Reservation */
 
 .reservation__form {
@@ -796,11 +806,9 @@ ul, ol, li {
 
 /* Buttons */
 .button {
-    background-color: var(--main-color-yellow);
     border: none;
     border-radius: 6px;
     padding: 5px 15px;
-    color: white;
     text-align: center;
     text-decoration: none;
 }
@@ -808,9 +816,22 @@ ul, ol, li {
 .button.button-lg {
     padding: 8px 40px;
 }
+.button.button-white {
+    background: var(--color-white);
+    color: var(--main-color-black);
+    border: 1px solid;
+}
+.button.button-golden {
+    background-color: var(--main-color-yellow);
+    color: white;
+}
 
-.button:hover {
+.button.button-golden:hover {
     background-color: var(--main-color-black);
+}
+.button.button-white:hover {    
+    background-color: var(--main-color-yellow);
+    color: white;
 }
 
 /* Texts */
@@ -827,7 +848,7 @@ ul, ol, li {
 }
 
 .bg-gray {
-    background-color: #dbdbdb;
+    background-color: var(--color-light);
 }
 
 .text-color-main {

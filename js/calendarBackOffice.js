@@ -113,18 +113,26 @@ calendarElement.addEventListener('click', function(e){
     if(e.target.classList.contains('month-day')){
         let daysWithActiveClass = document.querySelectorAll('.calendar__day-selected');
         let day = e.target;
+
+        /**
+         *  First check if the selected date is an available day.
+         *  If not, we don't add date.
+         */
+        if(!isAvailableDate(parseCalendar(day))){
+          console.log('Is Not Available day & Date selection: ', selectedDate);
+          return null;
+        }
+
+        /**
+         * Add a validated date
+         */
         getCalendarSelection(day);
         console.log('always selectedDate', selectedDate)
 
-        if(!isValidDate(selectedDate)){ 
-          selectedDate.pop();
-          console.log('Is Not Valid day & Date selection: ', selectedDate);
-          return null;
-        }
         if(isRepeatedDate(selectedDate)){
           console.log(`Is a repeteated day & date Selection: `, selectedDate);
-          selectedDate.pop();  
-          selectedDate.pop();  
+          selectedDate.pop();
+          selectedDate.pop();
           let isCheked = e.target.classList.contains('calendar__day-selected') 
                         ? e.target.classList.remove('calendar__day-selected')
                         : null;
@@ -171,33 +179,9 @@ function isConsecutiveDate(day, nextDay){
   return flag;
 
 }
-/* function isConsecutiveDate(parsedCalendar){
-    let flag = true;
-    if(parsedCalendar.length === 1){  return flag; }
-    if(parsedCalendar.length === 2){
-      const day = (parsedCalendar[0]).addDays(1);
-      const lastDay = parsedCalendar[1].date();
-      flag = (day.valueOf() === lastDay.valueOf())
-                        ? true
-                        : false;
-        return flag;
-    }
-    if(parsedCalendar.length > 2){
-      const day = parsedCalendar[parsedCalendar.length - 2].addDays(1);
-      const lastDay = parsedCalendar[parsedCalendar.length - 1].date();
-      day.setHours(0,0,0,0);
-      lastDay.setHours(0,0,0,0);
-      flag = (day.valueOf() == lastDay.valueOf())
-                      ? true
-                      : false;
-    }
-    return flag;
-}
- */
 function isRepeatedDate(parsedCalendar){
     let flag = false;
     if(parsedCalendar.length > 1){
-      // const lastDay = parsedCalendar[parsedCalendar.length - 1].date().getTime();
       const dateStamps = parsedCalendar.map((element) => Number(element.dateStamp()));
       const isRepeated = dateStamps.some((val, i) => dateStamps.indexOf(val) !== i);
       if(isRepeated){
@@ -207,16 +191,12 @@ function isRepeatedDate(parsedCalendar){
     return flag;
 }
 
-function isValidDate(parsedCalendar){
-  let flag = false;
-  if(parsedCalendar.length >= 1){
-    const lastDay = parsedCalendar[parsedCalendar.length - 1].date();
+function isAvailableDate(parsedDate){
     const today = new Date();
-    if(lastDay > today){
-      flag = true
+    if(parsedDate.date() > today){
+      return true;
     }
-  }
-  return flag;
+    return false;
 }
 
 function parseCalendar(htmlCalendarDay){
