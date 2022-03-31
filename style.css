@@ -5,6 +5,7 @@
 
     --color-white: #ffffff;
     --color-light: #dbdbdb;
+    --color-light-off: #bebebe;
 }
 
 /* Fonts */
@@ -84,9 +85,28 @@ ul, ol, li {
     width: 185px;
 }
 
+@media screen and (min-width: 768px){
+    .head__top {
+        margin: 7rem 0 3rem 0;
+        max-width: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    .head__logo {
+        width: 22rem;
+    }
+}
+
 /* menu */
 .menu__icon {
     width: 25px;
+}
+@media screen and (min-width: 768px){
+    .menu__icon {
+        visibility: hidden;
+    }
 }
 .menu__icon i{
     font-size: 22px;
@@ -198,7 +218,8 @@ ul, ol, li {
 .img__brand-container {
     margin: 1.8rem .5rem;
     flex: 0 0 12%;
-    max-width: 15%;
+    width: 15%;
+    max-width: 6rem;
 }
 
 .brand-icon-small {
@@ -236,6 +257,8 @@ ul, ol, li {
     left: 0%;
 }
 
+
+
 /* Main Card */
 
 .card{
@@ -243,6 +266,7 @@ ul, ol, li {
     width: 30rem;
     margin: 2.2rem auto;
     overflow: hidden;
+    display: block;
 }
 
 .card-head {
@@ -250,7 +274,7 @@ ul, ol, li {
 }
 
 .card__img {
-    max-height: 191px;
+    height: 191px;
     overflow: hidden;
 }
 
@@ -332,6 +356,36 @@ ul, ol, li {
     justify-content: center;
     align-items: center;
     gap: 0 10px;
+}
+
+@media (min-width: 768px) {
+    /* home page */
+    .home__grid {
+        max-width: 1200px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .home__grid a:nth-child(odd),
+    .home__grid .card:nth-child(odd)
+    {
+        margin-right: 3rem;
+    }
+
+    .card {
+        max-width: 100%;
+        width: 39rem;
+        margin: 2.2rem 0;
+    }
+    .card__img {
+        height: 225px;
+    }
+
+    .card__title>p {
+        line-height: 3.8rem;
+        font-size: 1.8rem;
+    }
 }
 
 /* Card - News and Lifestyle */
@@ -551,6 +605,7 @@ ul, ol, li {
 
 /* Calendar - BackOffice make Reservation */
 
+/* Add Reservation */
 .reservation__add_new_date {
     margin: 0 auto;
     display: flex;
@@ -574,7 +629,7 @@ ul, ol, li {
 .reservation__input textarea{
     height: 8rem;
     width: 100%;
-    padding: 0 1rem;
+    padding: .5rem 1rem;
 }
 .reservation__input.-no-border {
     border: none;
@@ -596,10 +651,47 @@ div.reservation__input_option{
     height: 3rem;
     border-bottom: 1px solid;
     width: 20rem;
-    margin: .6rem auto;
+    margin: 1.6rem auto;
 }
 div.reservation__input_option:last-child{
     border-bottom: none;
+}
+
+/* Existing reservation */
+
+.reservation__existing {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 85%;
+    height: auto;
+    padding: 1rem;
+}
+
+.reserved__day {
+    margin-bottom: 1rem;
+}
+.reserved__card {
+    border: 1px solid var(--main-color-black);
+    padding: 0 0.5rem;
+    margin-bottom: 1em;
+    border-radius: 5px;
+}
+
+.reserved__head {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 2.5em;
+}
+.reserved__head span {
+    position: absolute;
+    top: 50%;
+    left: 2rem;
+    transform: translate(-50%, -50%);
 }
 
 .not-available {
@@ -892,6 +984,11 @@ div.reservation__input_option:last-child{
     background: var(--color-white);
     color: var(--main-color-black);
     border: 1px solid;
+}
+.button.button-white-disable {
+    background: var(--color-white);
+    color: var(--color-light-off);
+    border: 1px solid var(--color-light-off);
 }
 .button.button-golden {
     background-color: var(--main-color-yellow);
