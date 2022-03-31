@@ -228,6 +228,10 @@ ul, ol, li {
 
 /* Hero section */
 
+.hero__content {
+    text-align: center;
+}
+
 .hero-container{
     height: auto;
     width: 100%;
@@ -255,6 +259,24 @@ ul, ol, li {
     color: var(--main-color-yellow);
     bottom: 0%;
     left: 0%;
+}
+
+@media (min-width: 768px) {
+    .hero-container-text{
+        display: inline-block;
+        border-top: .4rem solid var(--main-color-yellow);
+        border-bottom: .4rem solid var(--main-color-yellow);
+        line-height: 1.2em;
+        width: auto;
+        padding: 0 3rem;
+    }
+
+    .hero-container::before {
+        content: none;
+    }
+    .hero-container::after {
+        content: none;
+    }
 }
 
 
@@ -368,7 +390,7 @@ ul, ol, li {
     }
 
     .home__grid a:nth-child(odd),
-    .home__grid .card:nth-child(odd)
+    .home__grid .card:nth-child(odd):not(:last-of-type)
     {
         margin-right: 3rem;
     }
