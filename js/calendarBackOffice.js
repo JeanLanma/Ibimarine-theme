@@ -19,7 +19,7 @@ const calendarElement = document.querySelector('#reservationCalendar');
 let selectedDate = [];
 
 /* Localization settings */
-const locale = 'es';
+const locale = 'en';
 
 /**
  * Year & Array with 12 empty slots to save the months with their translations.
@@ -27,42 +27,66 @@ const locale = 'es';
  * with the native Intl js object below
 */
 
-const actualYear = 2022;
-const months = [...Array(12).keys()];
-
+const actualYear    = 2022;
+const months        = [0,1,2,3,4,5,6,7,8,9,10,11]; // slots for months
+const daysOfTheWeek = [0,1,2,3,4,5,6]; // slots for days of the week
 
 /* Settings to Format JS dates with Localization settings above */
+// months and week days are "0 indexed" (starts on zero);
 const intlForMonths = new Intl.DateTimeFormat(locale, { month: 'long' })
-const intlForWeeks = new Intl.DateTimeFormat(locale, { weekday: 'narrow' })
+const intlForWeeks  = new Intl.DateTimeFormat(locale, { weekday: 'narrow' })
 
 /**
  * WeekDyas Auto-Translated with Native JS Date Object
  * Formatted with Intl object to help with localization 
 */
-const weekDays = [...Array(7).keys()].map((dayIndex) =>
+const weekDays = daysOfTheWeek.map((dayIndex) =>
   intlForWeeks.format(new Date(actualYear, 7, dayIndex + 1))
+  // Here we need a month that starts on Monday 
+  // to return the days from Monday to Sunday 
 )
 
 /**
- * Get Calendar info to fill HTML calendar with accurate data
+ * Main function where we get the Calendar Real Data.
 */
+
+const monthlyCalendar = (Year = 2022, Month = 0) => { 
+  const baseDate = new Date(Year, Month);
+    return {
+      startsOn: (baseDate.getDay() === 0) ? 7 : baseDate.getDay(),
+      monthName: intlForMonths.format(baseDate),
+      numberDaysInMonth: new Date(Year, Month + 1, 0).getDate(),
+      monthId: baseDate.getFullYear()+ '-' + toValidDateNumber((baseDate.getMonth() + 1)),
+    }
+}
+
+const yearCalendar = (Year = 2022) => {
+  const Months = [0,1,2,3,4,5,6,7,8,9,10,11]; // slots for months
+  const calendar = Months.map((monthIndex) => monthlyCalendar(Year, monthIndex))
+
+  return calendar;
+}
+
 const calendar = months.map((monthIndex) => {
   const monthName = intlForMonths.format(new Date(actualYear, monthIndex));
   const nextMonthIndex = (monthIndex + 1) % 12;
   const daysOfMonth = new Date(actualYear, nextMonthIndex, 0).getDate();
   const startsOn = new Date(actualYear, monthIndex, 1).getDay();
   return {
-    daysOfMonth,
+    startsOn: (startsOn === 0 ? 7 : startsOn), // Sunday in js is index 0 so we need to change it to 7 so that it takes its rightful place in the calendar
     monthName,
-    startsOn: (startsOn === 0 ? 7 : startsOn),
-    monthId: new Date().getFullYear() + monthIndex.toString() ,
+    daysOfMonth,
+    monthId: new Date().getFullYear() + '-' + toValidDateNumber(monthIndex + 1)
   }
 })
 
   /**
-   * Make The html with accurete and localized information.
+   * Make The html with Real Calendar Data.
   */
-const CalendarTohtml = calendar.map(({ daysOfMonth, monthName, startsOn,monthId }) => {
+
+const MakeCalendar = calendar.map(({ daysOfMonth, monthName, startsOn,monthId }) => {
+    const currentDate = new Date();
+
     const days = [...Array(daysOfMonth).keys()];
 
     const firstDayAttributes = `class='first-day month-day' style='--first-day-start: ${startsOn}'`;
@@ -73,11 +97,10 @@ const CalendarTohtml = calendar.map(({ daysOfMonth, monthName, startsOn,monthId 
 
     const htmlDays = days
                       .map((day, index) =>
-                          `<li ${index === 0 ? firstDayAttributes : 'class="month-day"'}>${day + 1}</li>`
+                          `<li ${index === 0 ? firstDayAttributes : 'class="month-day"'} data-day-id="${monthId}-${toValidDateNumber(day + 1)}">${day + 1}</li>`
                       )
                       .join('')
 
-    const currentDate = new Date();
     return `
           <div data-month-id="${monthId}" class="calendar-front ${calendar[currentDate.getMonth()].monthName === monthName ? 'calendar-active': ''}">
               <div class="calendar__header">
@@ -104,7 +127,7 @@ const CalendarTohtml = calendar.map(({ daysOfMonth, monthName, startsOn,monthId 
 /**
  * Finally attaching the previously made calendar to the DOM
 */
-document.querySelector('#reservationCalendar').innerHTML = CalendarTohtml.join('');
+document.querySelector('#reservationCalendar').innerHTML = MakeCalendar.join('');
 
 // Calendar API to get Selected Date
 
@@ -123,23 +146,8 @@ calendarElement.addEventListener('click', function(e){
           return null;
         }
 
-        /**
-         * Add a validated date
-         */
-        getCalendarSelection(day);
-        console.log('always selectedDate', selectedDate)
-
-        if(isRepeatedDate(selectedDate)){
-          console.log(`Is a repeteated day & date Selection: `, selectedDate);
-          selectedDate.pop();
-          selectedDate.pop();
-          let isCheked = e.target.classList.contains('calendar__day-selected') 
-                        ? e.target.classList.remove('calendar__day-selected')
-                        : null;
-          return null;
-        }
         /* If not select next day consecutively, restart selection from last selected day*/
-        if(selectedDate.length > 1 && !isConsecutiveDate(selectedDate[selectedDate.length -2],selectedDate[selectedDate.length - 1].date())){
+        if(!isConsecutiveDate(selectedDate)){
             selectedDate = [];
             for(let i = 0; i < daysWithActiveClass.length; i++){
               daysWithActiveClass[i].classList.remove('calendar__day-selected');
@@ -149,12 +157,28 @@ calendarElement.addEventListener('click', function(e){
             console.log('Is not consecutive & date Selection: ', selectedDate)
             return null;
         }
+
+        /**
+         * Add a validated date
+         */
+        getCalendarSelection(day);
+        console.log('always selectedDate', selectedDate);
+
+        if(isRepeatedDate(selectedDate)){
+          console.log(`Is a repeteated day & date Selection: `, selectedDate);
+          selectedDate.pop();
+          selectedDate.pop();
+          let isCheked = e.target.classList.contains('calendar__day-selected') 
+                        ? e.target.classList.remove('calendar__day-selected')
+                        : null;
+        }
         console.log('Pass All comprobations & date Selection: ', selectedDate)
         /* check days and adding class selected */
         let isCheked = !e.target.classList.contains('calendar__day-selected') 
                       ? e.target.classList.add('calendar__day-selected')
                       : e.target.classList.remove('calendar__day-selected');
     }
+
     /* Change month in calendar */
     if(e.target.classList.contains('fa-chevron-left') || e.target.classList.contains('calendar-left-arrow')) {
         currentCalendarActive.classList.remove('calendar-active');
@@ -171,13 +195,18 @@ function getCalendarSelection(day){
     return selectedDate;
 }
 
-function isConsecutiveDate(day, nextDay){
+function isConsecutiveDate(parsedCalendar){
+  if(parsedCalendar.length === 1 ) return true;
   let flag = false;
-  if(day.d.getTime() == nextDay.getTime() || day.addDays(1).getTime() == nextDay.getTime()){
-    flag = true;
+  if(parsedCalendar.length > 1){
+    const day = parsedCalendar[parsedCalendar.length - 2];
+    const nextDay = parsedCalendar[parsedCalendar.length - 1];
+    // if(day.d.getTime() == nextDay.d.getTime() || day.addDays(1).getTime() == nextDay.d.getTime()){
+    if( day.addDays(1).getTime() == nextDay.d.getTime()){
+      flag = true;
+    }
   }
   return flag;
-
 }
 function isRepeatedDate(parsedCalendar){
     let flag = false;
@@ -236,4 +265,12 @@ function parseCalendar(htmlCalendarDay){
     }
     
     return calendar();
+}
+
+/**
+ *add a 0 to a one digit number 
+ *to convert it to two digits
+*/
+function toValidDateNumber(number){
+    return ('' + number).length < 2 ? '0' + ('' + number): ('' + number);
 }

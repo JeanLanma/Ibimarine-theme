@@ -238,48 +238,18 @@ ul, ol, li {
     position: relative;
     overflow: hidden;
     max-height: 42rem;
-}
-
-.hero-container::before {
-    content: '';
-    position: absolute;
-    height: .4rem;
-    width: 100%;
-    background-color: var(--main-color-yellow);
-    color: var(--main-color-yellow);
-    top: 0%;
-    left: 0%;
-}
-.hero-container::after {
-    content: '';
-    position: absolute;
-    height: .4rem;
-    width: 100%;
-    background-color: var(--main-color-yellow);
-    color: var(--main-color-yellow);
-    bottom: 0%;
-    left: 0%;
+    border-top: .4rem solid var(--main-color-yellow);
+    border-bottom: .4rem solid var(--main-color-yellow);
 }
 
 @media (min-width: 768px) {
-    .hero-container-text{
+    .hero-container{
         display: inline-block;
-        border-top: .4rem solid var(--main-color-yellow);
-        border-bottom: .4rem solid var(--main-color-yellow);
-        line-height: 1.2em;
         width: auto;
-        padding: 0 3rem;
-    }
-
-    .hero-container::before {
-        content: none;
-    }
-    .hero-container::after {
-        content: none;
+        line-height: 1.2em;
+        padding: 0 4rem;
     }
 }
-
-
 
 /* Main Card */
 
@@ -762,6 +732,12 @@ div.reservation__input_option:last-child{
     height: 15rem;
 }
 
+@media (min-width: 768px) {
+    .swiper-similar-boats {
+        width: 90%;
+    }
+}
+
 .similar-boat-thumbnails {
     width: 11rem;
     height: 11rem;
@@ -931,6 +907,9 @@ div.reservation__input_option:last-child{
 .d-block {
     display: block;
 }
+.d-inline-block {
+    display: inline-block;
+}
 
 .invisible {
     visibility: hidden;
@@ -1088,4 +1067,9 @@ div.reservation__input_option:last-child{
 .text-bold {
     font-family: Athelas;
     font-weight: bold;
+}
+
+.day-off {
+    border: 1px solid var(--color-light);
+    color: var(--color-light);
 }

@@ -43,6 +43,7 @@ const weekDays = [...Array(7).keys()].map((dayIndex) =>
   intlForWeeks.format(new Date(actualYear, 7, dayIndex + 1))
 )
 
+
 /**
  * Get Calendar info to fill HTML calendar with accurate data
 */
@@ -128,10 +129,9 @@ calendarElement.addEventListener('click', function(e){
           let isCheked = e.target.classList.contains('calendar__day-selected') 
                         ? e.target.classList.remove('calendar__day-selected')
                         : null;
-          return null;
         }
         /* If not select next day consecutively, restart selection from last selected day*/
-        if(selectedDate.length > 1 && !isConsecutiveDate(selectedDate[selectedDate.length -2],selectedDate[selectedDate.length - 1].date())){
+        if(!isConsecutiveDate(selectedDate)){
             selectedDate = [];
             for(let i = 0; i < daysWithActiveClass.length; i++){
               daysWithActiveClass[i].classList.remove('calendar__day-selected');
@@ -163,13 +163,16 @@ function getCalendarSelection(day){
     return selectedDate;
 }
 
-function isConsecutiveDate(day, nextDay){
+function isConsecutiveDate(parsedCalendar){
   let flag = false;
-  if(day.d.getTime() == nextDay.getTime() || day.addDays(1).getTime() == nextDay.getTime()){
-    flag = true;
+  if(parsedCalendar.length > 1){
+    const day = parsedCalendar[parsedCalendar.length - 2];
+    const nextDay = parsedCalendar[parsedCalendar.length - 1];
+    if(day.d.getTime() == nextDay.d.getTime() || day.addDays(1).getTime() == nextDay.d.getTime()){
+      flag = true;
+    }
   }
   return flag;
-
 }
 /* function isConsecutiveDate(parsedCalendar){
     let flag = true;
@@ -197,7 +200,6 @@ function isConsecutiveDate(day, nextDay){
 function isRepeatedDate(parsedCalendar){
     let flag = false;
     if(parsedCalendar.length > 1){
-      // const lastDay = parsedCalendar[parsedCalendar.length - 1].date().getTime();
       const dateStamps = parsedCalendar.map((element) => Number(element.dateStamp()));
       const isRepeated = dateStamps.some((val, i) => dateStamps.indexOf(val) !== i);
       if(isRepeated){
