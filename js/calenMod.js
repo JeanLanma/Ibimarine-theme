@@ -12,6 +12,20 @@ const ThePresent = new (function(){
     this.DAY = this.DATE.getDate();
 })();
 
+const UEmiter = function(){
+
+    events = [];
+
+    this.on = function(eventName, Listener){
+        this.events[eventName] = this.events[eventName] || [];
+        this.events[eventName].push(Listener);
+    }
+
+    this.emit = function(eventName){
+        this.events[eventName].forEach( (listener) => listener());
+    }
+}
+
 const UCalendar = new (function(){
     this.DaysOfTheWeekSlots = [0,1,2,3,4,5,6];
     this.MonthSlots         = [0,1,2,3,4,5,6,7,8,9,10,11];
@@ -53,12 +67,13 @@ const UCalendar = new (function(){
         return ('' + number).length < 2 ? '0' + ('' + number): ('' + number);
     }
 
-    this.parseDate = function(calendarDate){
-      const [year, month, day] = calendarDate.getAttribute('data-day-id').split('-');
-      const ParsedDate = new Date(Number(year),Number(month - 1),Number(day));
-
+    this.parserFromNumbers = function(YYYY,M,D){
+      const ParsedDate = new Date(YYYY,M,D);
+      const dateId = [YYYY,UCalendar.toValidDateNumber(M+1),UCalendar.toValidDateNumber(D)].join('-');
+      const calendarDate = document.querySelector(`[data-day-id="${dateId}"]`) || document.createElement('span');
       return {
         date: ParsedDate,
+        dateId,
         dateElement: calendarDate,
         year: ParsedDate.getFullYear(),
         month: ParsedDate.getMonth(),
@@ -67,9 +82,43 @@ const UCalendar = new (function(){
         addDays: function(days){
                     const newDate = new Date( +ParsedDate );
                     newDate.setDate(newDate.getDate() + Number(days));
+                    const newDateParsed = UCalendar.parserFromNumbers(newDate.getFullYear(),newDate.getMonth(),newDate.getDate());
+                    console.log(newDateParsed)
                     return newDate;
                 }
+            
       }
+    }
+
+    this.parser = function(calendarDate){
+      const [year, month, day] = calendarDate.getAttribute('data-day-id').split('-');
+      const ParsedDate = new Date(Number(year),Number(month - 1),Number(day));
+
+      return {
+        date: ParsedDate,
+        dateId: [year,month,day].join(''),
+        dateElement: calendarDate,
+        year: ParsedDate.getFullYear(),
+        month: ParsedDate.getMonth(),
+        monthName: LocaleForMonths.format(ParsedDate),
+        day: ParsedDate.getDate(),
+        addDays: function(days){
+                    const newDate = new Date( +ParsedDate );
+                    newDate.setDate(newDate.getDate() + Number(days));
+                    const newDateParsed = UCalendar.parserFromNumbers(newDate.getFullYear(),newDate.getMonth(),newDate.getDate());
+                    return newDate;
+                }
+            
+      }
+    }
+
+    this.isDuplicated = function(Elements, elemntId){
+      return parsedDatesId.indexOf(dateId);
+    }
+    this.isDuplicatedDate = function(ParsedDates, date){
+      const DatesId = ParsedDates.map( (parsedDate) => parsedDate.dateId);
+
+      return DatesId.indexOf(date.dateId);
     }
 
     this.isCalendarDate = function(element){
@@ -80,14 +129,58 @@ const UCalendar = new (function(){
       return calendarDate > UCalendar.Now().DATE;
     }
 
-    this.areConsecutiveDates = function(day, nextDay){
-    
+    this.areConsecutiveDates = function(lastDay, pickedDay){
+      return lastDay;
     }
 })();
 
-const UICalendar = function({startsOn, monthName, numberDaysInMonth, monthId, year}){
+const UDatePicker = function(UcalendarParsed){
+    this.savedDates = [];
 
-    this.pickedDays = [];
+    this.saveDate = function(ParsedDate){
+        this.savedDates.push(ParsedDate);
+    };
+    this.pickDate = function(ParsedDate){
+      if(ParsedDate.hasOwnProperty('dateElement')) {
+          let classToggle = ParsedDate.dateElement.classList.toggle('calendar__day-selected');
+          const isRepeteated = UCalendar.isDuplicatedDate(this.savedDates,ParsedDate);
+          if(isRepeteated === -1){
+            this.savedDates.push(ParsedDate);
+          }else {
+            this.savedDates.splice(isRepeteated, 1);
+          }
+        }
+        
+    };
+
+    this.getDates = function(){
+        return this.savedDates;
+    }
+}
+
+const UXCalendar = function({UIcalendar}){
+
+    this.UIcalendar = UIcalendar;
+    
+    this.showNextCalendar = function(e){
+      const activeCalendar = document.querySelector('.calendar-active');
+
+      if(activeCalendar.nextElementSibling) {
+          activeCalendar.classList.remove('calendar-active');
+          activeCalendar.nextElementSibling.classList.add('calendar-active');
+      }
+    }
+    this.showPrevCalendar = function(e){
+      const activeCalendar = document.querySelector('.calendar-active');
+
+      if(activeCalendar.previousElementSibling) {
+          activeCalendar.classList.remove('calendar-active');
+          activeCalendar.previousElementSibling.classList.add('calendar-active');
+      }
+    }
+}
+
+const UICalendar = function({startsOn, monthName, numberDaysInMonth, monthId, year}){
 
     this.firstDayAttributes = `class='first-day month-day' style='--first-day-start: ${startsOn}'`;
     
@@ -98,7 +191,7 @@ const UICalendar = function({startsOn, monthName, numberDaysInMonth, monthId, ye
     this.HtmlWeekDays = UCalendar.weekDays.map((dayName) => `<li class='day-name'>${dayName}</li> \n`);
 
     this.HtmlMonthCalendar = `
-          <div data-month-id="${monthId}" class="calendar-front ${UCalendar.getMonthCalendarInfo().monthName === monthName ? 'calendar-active': 'calendar-active'}">
+          <div data-month-id="${monthId}" class="calendar-front ${UCalendar.getMonthCalendarInfo().monthName === monthName ? 'calendar-active': ''}">
           <div class="calendar__header">
             <div class="calendar-left-arrow cursor-pointer"><i class="fa-solid fa-chevron-left"></i></div>
               <div class="calendar__month_year">
@@ -119,52 +212,43 @@ const UICalendar = function({startsOn, monthName, numberDaysInMonth, monthId, ye
       </div>
     `;
 
-    this.createElement = (initObj)=> {
-      var element = document.createElement(initObj.Tag);
-      for (var prop in initObj) {
-          if (prop === "childNodes") {
-              initObj.childNodes.forEach(function (node) { element.appendChild(node); });
-          }
-          else if (prop === "attributes") {
-              initObj.attributes.forEach(function (attr) { element.setAttribute(attr.key, attr.value) });
-          }
-          else element[prop] = initObj[prop];
-      }
-      return element;
-  }
-
 }
 
 const UIFullCalendar = function({Year, target}){
-    const _Year = Year || UCalendar.Now().Year;    
-    const _target = target;
 
-    const pickedDays = [];
+    const _Year = Year || UCalendar.Now().Year;
+    this._target = target;  
 
-    document.addEventListener('DOMContentLoaded', function(){
+    this.UIcalendar = UCalendar.getYearCalendarInfo(_Year).map((element) => new UICalendar(element));
+    this.UICalendarHtml = this.UIcalendar.map((HtmlCalendar) => HtmlCalendar.HtmlMonthCalendar);
+    
+    this._target.innerHTML = this.UICalendarHtml.join('');
 
-        if(typeof _target !== 'object') return null;
 
-        _target.addEventListener('click', function(e){
-          
+    const pickedDays = new UDatePicker(UCalendar);
+    const UXcontroll = new UXCalendar({UIcalendar: this})
+
+    document.addEventListener('DOMContentLoaded', function(event){
+
+        if(typeof target !== 'object') return null;
+
+        target.addEventListener('click', function(e){
+
+          if(e.target.classList.contains('fa-chevron-right') || e.target.classList.contains('calendar-right-arrow')) {
+              UXcontroll.showNextCalendar(e);
+          }
+      if(e.target.classList.contains('fa-chevron-left') || e.target.classList.contains('calendar-left-arrow')) {
+              UXcontroll.showPrevCalendar(e);
+          }
+
             if(!UCalendar.isCalendarDate(e.target)) return null;
 
-            const pickedDay = UCalendar.parseDate(e.target);
+            const pickedDay = UCalendar.parser(e.target);
 
-            if(!UCalendar.isAfterToday(pickedDay.date)) return null;
+            if(!UCalendar.isAfterToday(pickedDay.date)) ;//return null;
 
-            pickedDay.dateElement.classList.add('calendar__day-selected');
-            
-            console.log(pickedDay.date);
-            console.log(pickedDay.addDays(1));
-
-            pickedDays.push(pickedDay);
-
-            console.log(pickedDays);
+            pickedDays.pickDate(pickedDay);
         })
     })
-
-    this.HtmlCalendar = UCalendar.getYearCalendarInfo(_Year).map((element) =>new UICalendar(element, target).HtmlMonthCalendar);
-
-    _target.innerHTML = this.HtmlCalendar.join('');
+    
 }
